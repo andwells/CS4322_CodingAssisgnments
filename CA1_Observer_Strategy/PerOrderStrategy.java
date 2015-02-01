@@ -3,9 +3,10 @@ import java.io.*;
 import java.util.ArrayList;
 public class PerOrderStrategy implements SalesStrategy
 {
-
-  public SalesStats Read(File toRead) 
-  {
+   
+   @Override
+   public SalesStats Read(File toRead) 
+   {
       Scanner reader;
       try
       {
@@ -23,6 +24,6 @@ public class PerOrderStrategy implements SalesStrategy
       }
       
       return new SalesStats(orders);
-  }
+   }
 
 }
