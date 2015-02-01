@@ -3,7 +3,6 @@ import java.util.Scanner;
 import java.io.File;
 public class Corporation
 {
-
   private SalesStrategy  salesStrategy;      //The current strategy for reading data
   private HashMap<String, SalesStats> stores;//Maps stores names to sales data
   
@@ -64,7 +63,6 @@ public class Corporation
   {
       return stores.get(storeName);
   }
-  
   
   /**
   * printReport

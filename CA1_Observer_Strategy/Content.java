@@ -1,4 +1,5 @@
-public interface Content {
+public interface Content
+{
 
   public void notifySubscribers();
 
