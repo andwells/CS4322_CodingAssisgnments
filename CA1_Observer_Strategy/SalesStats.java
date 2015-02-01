@@ -91,7 +91,7 @@ public class SalesStats {
       
       for(int d=0; d<temp.size(); d++)
       {
-        temp.set(d, Math.Pow(temp.get(d)-calcAverage(values), 2));
+        temp.set(d, Math.pow(temp.get(d)-calcAverage(values), 2));
         stdDev = calcAverage(temp);
         stdDev = Math.sqrt(stdDev);
       }
