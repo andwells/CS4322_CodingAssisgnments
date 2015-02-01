@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 public class SalesStats {
   private double total;
 
@@ -54,37 +55,73 @@ public class SalesStats {
   
   private double calcTotal(ArrayList<Double> values)
   {
-      return 0.0;
+      double tot = 0.0;
+      for(double d : values)
+      {
+         tot += d;
+      }
+      return tot;
   }
   
   private double calcAverage(ArrayList<Double> values)
   {
-      return 0.0;
+      double sum = 0.0;
+      for(double d: values)
+      {
+         sum += d;
+      }
+      return sum/values.size();
   }
   
   private double calcMedian(ArrayList<Double> values)
   {
-      return 0.0;
+      
+      Double[] items = new Double[values.size()];
+      items = values.toArray(items);
+      Arrays.sort(items);
+            
+      return items[items.length/2];
   }
   
   private double calcStandDev(ArrayList<Double> values)
   {
       double stdDev = 0;
+      
       ArrayList<Double> temp = new ArrayList<Double>(values);
-      for(int d=0; d<temp.size(); d++){
+      
+      for(int d=0; d<temp.size(); d++)
+      {
         temp.set(d, Math.Pow(temp.get(d)-calcAverage(values), 2));
         stdDev = calcAverage(temp);
         stdDev = Math.sqrt(stdDev);
+      }
       return stdDev;
   }
   
   private double calcMin(ArrayList<Double> values)
   {
-      return 0.0;
+      double aMin = Double.MAX_VALUE;
+      for(Double d : values)
+      {
+         if(d <= aMin)
+         {
+            aMin = d;
+         }
+      }
+      return aMin;
   }
   
   private double calcMax(ArrayList<Double> values)
   {
-      return 0.0;
+      double aMax = Double.MIN_VALUE;
+      for(Double d: values)
+      {
+         if(d >= aMax)
+         {
+            aMax = d;
+         }
+      }
+      
+      return aMax;
   }
 }
