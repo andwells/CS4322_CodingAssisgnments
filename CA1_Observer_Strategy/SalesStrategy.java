@@ -1,6 +1,6 @@
+import java.io.File;
 public interface SalesStrategy {
-
   
-  public SalesStats Read();
+  public SalesStats Read(File toRead);
 
 }
