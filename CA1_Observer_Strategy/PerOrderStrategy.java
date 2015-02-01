@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.io.*;
-public class PerOrderStrategy implements SalesStrategy {
+import java.util.ArrayList;
+public class PerOrderStrategy implements SalesStrategy
+{
 
   public SalesStats Read(File toRead) 
   {
@@ -14,12 +16,13 @@ public class PerOrderStrategy implements SalesStrategy {
          return null;
       }
       
+      ArrayList<Double> orders = new ArrayList<Double>();
       while(reader.hasNext())
       {
-         
+         orders.add(reader.nextDouble());
       }
       
-      return null;
+      return new SalesStats(orders);
   }
 
 }
