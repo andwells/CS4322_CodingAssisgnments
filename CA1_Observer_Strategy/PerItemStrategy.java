@@ -1,5 +1,6 @@
-import java.io.File
-import java.util.Scanner
+import java.io.*;
+import java.util.Scanner;
+import java.util.ArrayList;
 
 public class PerItemStrategy implements SalesStrategy
 {
@@ -10,7 +11,7 @@ public class PerItemStrategy implements SalesStrategy
     Scanner reader;
     try
     {
-      reader = new Scanner(toRead)
+      reader = new Scanner(toRead);
     }
     catch (FileNotFoundException fnEx)
     {
@@ -25,11 +26,11 @@ public class PerItemStrategy implements SalesStrategy
       item = reader.next();
       if(item.equals("#"))
       {
-        orders.Add(itemSum)
+        orders.add(itemSum);
         itemSum = 0;
       }
       else
-        itemSum += Double.Parse(item);
+        itemSum += Double.parseDouble(item);
     }
   
   return new SalesStats(orders);
