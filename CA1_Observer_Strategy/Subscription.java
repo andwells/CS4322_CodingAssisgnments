@@ -1,6 +1,6 @@
 public interface Subscription {
 
   
-  public void update();
+  public void update(Object arg);
 
 }
