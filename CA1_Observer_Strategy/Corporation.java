@@ -1,18 +1,18 @@
 import java.util.HashMap;
 import java.util.Scanner;
-import java.io.File;
+import java.io.*;
 public class Corporation
 {
   private SalesStrategy  salesStrategy;      //The current strategy for reading data
   private HashMap<String, SalesStats> stores;//Maps stores names to sales data
   
-  public Corporation()
+  public Corporation() throws IOException
   {
       stores = new HashMap<String, SalesStats>();
       salesStrategy = null;
       
-      Scanner scan = new Scanner("Corporations.txt");
-      scan.nextLine();//Consumes the column headers
+      Scanner scan = new Scanner(new File("Corporations.txt"));
+      String temp = scan.nextLine();//Consumes the column headers
       
       //Loops through the listing of files
       while(scan.hasNext())
@@ -81,7 +81,7 @@ public class Corporation
          report += "Standard Deviation\t\t" + Math.round(stat.getStandardDeviation()) + "\n";
          report += "Minimum\t\t" + Math.round(stat.getMinimum()) + "\n";
          report += "Median\t\t" + Math.round(stat.getMedian()) + "\n";
-         report += "Median\t\t" + Math.round(stat.getMaximum()) + "\n";         
+         report += "Maximum\t\t" + Math.round(stat.getMaximum()) + "\n";         
       }
       report += "\n*****End of Report*****";
       
