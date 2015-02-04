@@ -5,7 +5,7 @@ public class ContentProvider implements Content
 {
    private Integer notifyThreshold;   
    private ArrayList<Subscription> subscribers;
-   private ArrayList<String> newsBuffer;
+   private ArrayList<PressRelease> newsBuffer;
    private Scanner scan;
    
    public void setThreshold(Integer newThreshold)
@@ -17,7 +17,10 @@ public class ContentProvider implements Content
    public void notifySubscribers()
    {
       for(Subscription sub : subscribers)
-         sub.Update(null);
+      {
+         sub.Update(new Arraylist<PressRelease>(newsBuffer));
+      }
+      newsBuffer.clear();
    }
    
    public Boolean subscribe(Subscription aSubscription)
@@ -43,17 +46,30 @@ public class ContentProvider implements Content
    {
          notifyThreshold = 10;
          subscribers = new ArrayList<Subscription>;
-         newsBuffer = new ArrayList<String>;
+         newsBuffer = new ArrayList<PressRelease>;
          scan = new Scanner(new File("news.txt"));
    }
    
-   public void readFromFile() 
+   /*public void readFromFile() 
    {
       if(scan.hasNext())
       {
          newsBuffer.add(scan.NextLine());
          if(newsBuffer.size()>=notifyThreshold)
             notifySubscribers();
+      }
+   }*/
+   
+   public void readFromFile()
+   {
+      String line;
+      if(scan.hasNext())
+      {
+         line = scan.NextLine();
+         String[] movieDetails = line.split("::");
+         SimpleDateFormat df = new SimpleDateFormat();
+         df.parseObject(movieDetails[1]);
+         PressRelease movie = new PressRelease(movieDetails[0], movieDetails[1], movieDetails[2]);
       }
    }
    
