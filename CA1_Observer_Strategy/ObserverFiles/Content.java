@@ -6,5 +6,6 @@ public interface Content
   public Boolean subscribe(Subscription aSubscription);
 
   public Boolean unsubscribe(Subscription toRemove);
-
+  
+  public void start();
 }
