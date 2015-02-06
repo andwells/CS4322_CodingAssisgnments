@@ -44,25 +44,13 @@ public class Corporation
             return new PerItemStrategy();
          case 2:
             return new PerOrderStrategy();
+         case 3:
+            return new PerCsvStrategy();
          default:
             return null;   
       }
   }
-  
-  public void setStrategy(SalesStrategy strategy)
-  {
-      this.salesStrategy = strategy;
-  }
-  
-  /**
-  * getStats
-  * @param storeName the description of the store
-  * @return the SalesStats object associated with the given store name
-  */
-  public SalesStats getStats(String storeName)
-  {
-      return stores.get(storeName);
-  }
+
   
   /**
   * printReport

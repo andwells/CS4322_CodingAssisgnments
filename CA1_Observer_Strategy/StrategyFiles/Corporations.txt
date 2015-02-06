@@ -1,5 +1,6 @@
 Store Location	Format	File Name
-Valdosta	2	Val.txt
+Valdosta    2	Val.txt
 Tifton		1	Tifton.txt
-Douglass	1	Douglas.txt
-Waycross	2	Waycross.txt
+Douglas		1	Douglas.txt
+Waycross 	2	Waycross.txt
+Hahira   	3  Hahira.csv
