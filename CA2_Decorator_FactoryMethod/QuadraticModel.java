@@ -6,7 +6,7 @@ public class QuadraticModel {
     return null;
   }
   
-  public void evalute(String func, double[] xValues){
+  public double[] evalute(String func, double[] xValues){
     createFunction(func);
   }
 }
