@@ -1,17 +1,7 @@
 public abstract class Model {
-
-  public Model createModel(String type) {
-    Function func;
-    
-    func = createFunction(type);
-    
-    return func;
-  }
   
-  proctected abstract Function createFunction(String type);
+  proctected abstract Function createFunction();
   
-  // other methods here
-  protected evaluate(//function){
-  }
+  // other methods here... like evaluate()
   
 }
