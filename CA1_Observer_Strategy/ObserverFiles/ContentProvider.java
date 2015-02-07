@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Random;
 import java.io.*;
 public class ContentProvider implements Content
 {
@@ -7,13 +8,15 @@ public class ContentProvider implements Content
    private ArrayList<Subscription> subscribers;
    private ArrayList<PressRelease> newsBuffer;
    private Scanner scan;
+   private boolean isChanged;
    
    public ContentProvider() throws IOException
    {
       notifyThreshold = 10;
       subscribers = new ArrayList<Subscription>();
       newsBuffer = new ArrayList<PressRelease>();
-      scan = new Scanner(new File("news.txt"));
+      scan = new Scanner(new File("movies.txt"));
+      isChanged = false;
    }
    
    public void setThreshold(Integer newThreshold)
@@ -49,17 +52,7 @@ public class ContentProvider implements Content
          return false;
       }
    }
-   
-      
-   /*public void readFromFile() 
-   {
-      if(scan.hasNext())
-      {
-         newsBuffer.add(scan.NextLine());
-         if(newsBuffer.size()>=notifyThreshold)
-            notifySubscribers();
-      }
-   }*/
+
    
    public boolean readFromFile()
    {
@@ -71,7 +64,7 @@ public class ContentProvider implements Content
          // SimpleDateFormat df = new SimpleDateFormat();
 //          df.parseObject(movieDetails[1]);
          PressRelease movie = new PressRelease(movieDetails[0], Integer.parseInt(movieDetails[1]), movieDetails[2]);
-         newsBuffer.add(movie);         
+         newsBuffer.add(movie);      
          return true;
       }
       else
@@ -87,7 +80,23 @@ public class ContentProvider implements Content
       while(result)
       {
          result = readFromFile();
+         if(result)
+         {
+            try
+            {
+               this.wait(1000);
+            }
+            catch(InterruptedException iEx)
+            {
+               
+            }
+         }
       }
+   }
+   
+   protected void setChanged()
+   {
+      isChanged=false;
    }
    
 }
