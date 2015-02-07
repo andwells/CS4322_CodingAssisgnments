@@ -26,26 +26,28 @@ public class Subscriber implements Subscription
          ArrayList<PressRelease> temp1 = (ArrayList<PressRelease>)arg;
          Collections.sort(temp1, byName);
          
-         System.out.println("***\tMovies sorted by Name\t***\n");
-         System.out.printf("Name\t\tRelease Date\t\tCategory\n");
+         System.out.println("\n***\tMovies sorted by Name\t***");
+         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
          for(PressRelease pr : temp1)
          {
-            System.out.printf("%s\t\t%s\t\t%s", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
          }
          
-         System.out.println("***\tMovies sorted by Newest Release Year\t***\n");
+         System.out.println("\n***\tMovies sorted by Newest Release Year\t***");
          Collections.sort(temp1, byDate);//Sort items by year
          Collections.reverse(temp1);//Put newest releases first
+         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
          for(PressRelease pr : temp1)
          {
-            System.out.printf("%s\t\t%s\t\t%s", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
          }
          
-         System.out.println("***\tMovies sorted by Category\t***\n");
+         System.out.println("\n***\tMovies sorted by Category\t***");
+         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
          Collections.sort(temp1, byCategory);
          for(PressRelease pr : temp1)
          {
-            System.out.printf("%s\t\t%s\t\t%s", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
          }
       }
    }
@@ -73,11 +75,11 @@ public class Subscriber implements Subscription
    {
       public int compare(PressRelease pr1, PressRelease pr2)
       {
-         if(pr1.getReleaseDate() < 0)
+         if(pr1.getReleaseDate() < pr2.getReleaseDate())
          {
             return -1;
          }
-         else if(pr1.getReleaseDate() == 0)
+         else if(pr1.getReleaseDate() == pr2.getReleaseDate())
          {
             return 0;
          }

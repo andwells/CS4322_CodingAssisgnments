@@ -27,11 +27,15 @@ public class ContentProvider implements Content
    
    public void notifySubscribers()
    {
-      for(Subscription sub : subscribers)
+      if(isChanged)
       {
-         sub.update(new ArrayList<PressRelease>(newsBuffer));
+         for(Subscription sub : subscribers)
+         {
+            sub.update(new ArrayList<PressRelease>(newsBuffer));
+         }
+         newsBuffer.clear();
+         isChanged = false;
       }
-      newsBuffer.clear();
    }
    
    public Boolean subscribe(Subscription aSubscription)
@@ -61,10 +65,17 @@ public class ContentProvider implements Content
       {
          line = scan.nextLine();
          String[] movieDetails = line.split("::");
-         // SimpleDateFormat df = new SimpleDateFormat();
-//          df.parseObject(movieDetails[1]);
          PressRelease movie = new PressRelease(movieDetails[0], Integer.parseInt(movieDetails[1]), movieDetails[2]);
-         newsBuffer.add(movie);      
+         
+         
+         
+         newsBuffer.add(movie);
+         setChanged();
+         if(isChanged)
+         {
+            notifySubscribers();
+         }
+         
          return true;
       }
       else
@@ -76,27 +87,25 @@ public class ContentProvider implements Content
    
    public void start()
    {
+      int counter = 0;
       boolean result = true;
       while(result)
       {
          result = readFromFile();
-         if(result)
+         counter++;
+         if(counter %2 == 0)
          {
-            try
-            {
-               this.wait(1000);
-            }
-            catch(InterruptedException iEx)
-            {
-               
-            }
+            this.setThreshold(counter / 2);
          }
       }
    }
    
    protected void setChanged()
    {
-      isChanged=false;
+      if(newsBuffer.size() >= notifyThreshold)
+      {
+         isChanged = true;
+      }
    }
    
 }

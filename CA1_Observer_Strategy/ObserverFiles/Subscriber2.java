@@ -15,10 +15,10 @@ public class Subscriber2 implements Subscription
          System.out.printf("\n\nNew updates have been seen by %s! Printing data...\n", this.subscriberName);
          ArrayList<PressRelease> temp1 = (ArrayList<PressRelease>)arg;
 
-         System.out.printf("Name\t\tRelease Date\t\tCategory\n");
+         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
          for(PressRelease pr : temp1)
          {
-            System.out.printf("%s\t\t%s\t\t%s", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
          }
 
       }
