@@ -4,4 +4,8 @@ public abstract class Model {
   
   // other methods here... like evaluate()
   
+  protected abstract void evalute(){
+    createFunction();
+  }
+  
 }
