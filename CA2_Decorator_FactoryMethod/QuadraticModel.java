@@ -5,4 +5,8 @@ public class QuadraticModel {
     //logic from decorators
     return null;
   }
+  
+  public void evalute(String func, double[] xValues){
+    createFunction(func);
+  }
 }
