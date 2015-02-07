@@ -1,12 +1,10 @@
-public abstract class Model 
-{
+public abstract class Model {
   
-  protected abstract Function createFunction(String func);
+  proctected abstract Function createFunction(String func);
   
-  //other methods here... like evaluate()
+  // other methods here... like evaluate()
   
-  public void evalute(String func, double[] xValues)
-  {
+  public void evalute(String func, double[] xValues){
     createFunction(func);
   }
   
