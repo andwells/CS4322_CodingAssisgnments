@@ -1,6 +1,7 @@
-public abstract class Model {
+public abstract class Model
+{
   
-  proctected abstract Function createFunction(String func);
+  protected abstract Function createFunction(String func);
   
   // other methods here... like evaluate()
   
