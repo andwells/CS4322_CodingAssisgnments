@@ -1,6 +1,8 @@
 public class QuadraticModel {
   
-  proctected abstract Function createFunction(String func){
+  protected Function createFunction(String func)
+  {
     //logic from decorators
+    return null;
   }
 }
