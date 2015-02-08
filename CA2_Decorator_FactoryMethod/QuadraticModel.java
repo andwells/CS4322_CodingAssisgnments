@@ -9,12 +9,13 @@ public class QuadraticModel{
       for(int i = 0; i < func.length();i++)
       {
          char currentChar = func.charAt(i);
-      	if(!isLegalChar(currentChar))
+      	if(isLegalChar(currentChar))
       	{
-      		//throw new exception
+      		//do something
       	}
-      	else if(true)
+      	else
       	{
+            //throw malformed 
       	}
       }
     
@@ -30,33 +31,29 @@ public class QuadraticModel{
   
   private boolean isLegalChar(char aChar)
   {
-      if(aChar <= 41)
+      if(aChar >= 40 && aChar <= 43)
    	{
-   		return false;
+   		return true;
    	}
-   	else if(aChar == 44)
+   	else if(aChar >= 45 && aChar <= 57)
    	{
-   		return false;	
+   		return true;	
    	}
-   	else if(aChar >= 58 && aChar <= 64)
+   	else if(aChar >= 65 && aChar <= 90)
    	{
-   		return false;
+   		return true;
    	}
-   	else if(aChar == 91 || aChar == 92 || aChar == 93)
+   	else if(aChar == 94)
    	{
-   		return false;	
+   		return true;	
    	}
-   	else if(aChar == 95 || aChar == 96)
+   	else if(aChar >= 97 && aChar <= 122)
    	{
-   		return false;
-   	}
-   	else if(aChar >= 123)
-   	{
-   		return false;
+   		return true;
    	}
    	else
    	{
-   		return true;
+   		return false;
    	} 		
    }
 }
