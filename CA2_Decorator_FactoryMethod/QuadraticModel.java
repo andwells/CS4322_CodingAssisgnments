@@ -38,7 +38,7 @@ public class QuadraticModel{
    	{
    		return false;	
    	}
-   	else if(aChar >= 58 || aChar <= 64)
+   	else if(aChar >= 58 && aChar <= 64)
    	{
    		return false;
    	}
