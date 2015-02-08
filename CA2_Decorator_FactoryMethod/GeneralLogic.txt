@@ -1,7 +1,8 @@
 //Highest power
 1. first char is # or var
-2. if first is #, second is var; if first is var, second is ^
-3. if second is var, third is ^;if second is ^, third is power
+2. if first is #, second is var OR if first is var, second is ^
+3. if second is var, third is ^ OR if second is ^, third is power
+4. if third is ^, fourth is power
 
 +/-
 
