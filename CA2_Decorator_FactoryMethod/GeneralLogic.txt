@@ -1,0 +1,18 @@
+//Highest power
+1. first char is # or var
+2. if first is #, second is var; if first is var, second is ^
+3. if second is var, third is ^;if second is ^, third is power
+
++/-
+
+//next power
+1. first char is # or var
+2. if first is #, second is #; if first is var, end
+
++/-
+
+constant
+
+
+//end
+new add/subtract(left side, new Constant(endConst));
