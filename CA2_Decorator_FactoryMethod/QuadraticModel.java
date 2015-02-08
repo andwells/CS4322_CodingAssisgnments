@@ -1,4 +1,4 @@
-public class QuadraticModel {
+public class QuadraticModel{
   
   protected Function createFunction(String func)
   {

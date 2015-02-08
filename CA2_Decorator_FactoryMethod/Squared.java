@@ -9,6 +9,6 @@ public class Squared extends Function
    
    public double evaluate(double at)
    {
-      return leftSide.evaluate(at) * leftSide.evaluate(at);
+      return Math.pow(leftSide.evaluate(at), 2);
    }
 }
