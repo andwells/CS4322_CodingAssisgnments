@@ -9,6 +9,6 @@ public class Cubed extends Function
    
    public double evaluate(double at)
    {
-      return Math.pow(leftSide.evaluate(at), 2);
+      return Math.pow(leftSide.evaluate(at), 3);
    }
 }
