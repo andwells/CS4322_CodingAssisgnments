@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-public class QuadraticModel
+public class QuadraticModel extends Model
 {
   
   protected Function createFunction(String func)
@@ -10,7 +10,7 @@ public class QuadraticModel
       for(int i = 0; i < func.length();i++)
       {
          char currentChar = func.charAt(i);
-      	if(isLegalChar(currentChar))
+      	if(super.isLegalChar(currentChar))
       	{
             if(Character.isAlphabetic(currentChar) && currentChar == firstVar)
             {
@@ -43,31 +43,5 @@ public class QuadraticModel
     return yValues;
   }
   
-  private boolean isLegalChar(char aChar)
-  {
-      if(aChar >= 40 && aChar <= 43)
-   	{
-   		return true;
-   	}
-   	else if(aChar >= 45 && aChar <= 57)
-   	{
-   		return true;	
-   	}
-   	else if(aChar >= 65 && aChar <= 90)
-   	{
-   		return true;
-   	}
-   	else if(aChar == 94)
-   	{
-   		return true;	
-   	}
-   	else if(aChar >= 97 && aChar <= 122)
-   	{
-   		return true;
-   	}
-   	else
-   	{
-   		return false;
-   	} 		
-   }
+ 
 }
