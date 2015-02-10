@@ -31,17 +31,6 @@ public class QuadraticModel extends Model
     
     return null;
   }
-  
-  public double[] evalute(String func, double[] xValues)
-  {
-    Function f = createFunction(func);
-    double[] yValues = new double[xValues.length];
-    for(int i = 0; i < yValues.length;i++)
-    {
-      yValues[i] = f.evaluate(xValues[i]);
-    }  
-    return yValues;
-  }
-  
+ 
  
 }

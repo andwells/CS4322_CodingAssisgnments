@@ -33,8 +33,14 @@ public abstract class Model
   
   public double[] evalute(String func, double[] xValues)
   {
-    createFunction(func);
-    return null;
+    Function f = createFunction(func);
+    double[] yValues = new double[xValues.length];
+    for(int i = 0; i < yValues.length;i++)
+    {
+      yValues[i] = f.evaluate(xValues[i]);
+    }  
+    return yValues;
+
   }
   
 }
