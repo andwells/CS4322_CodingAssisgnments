@@ -6,15 +6,17 @@ public class PolynomialModel extends Model
    
    protected Function createFunction(String func)
    {
-      Pattern p = Pattern.compile("\\p{Alpha}\\^\\p{Digit}");
-      Pattern p3 = Pattern.compile("\\p{Alpha}(\\+|\\-\\p{Digit})?");
-      Pattern p4 = Pattern.compile("^\\b\\p({Digit})+\\b$");
+      Pattern p = Pattern.compile("\\p{Alpha}\\^(\\p{Digit})+");
+      Pattern p3 = Pattern.compile("\\p{Alpha}((\\+|\\-)(\\p{Digit})+)?");
+      Pattern p4 = Pattern.compile("^\\b(\\p{Digit})+\\b$");
       
-      // Matcher m = p.matcher(func);
-//       if(m.find())
-//       {
-//          //check for highest power
-//       }
+      Matcher m = p.matcher(func);
+      if(m.find())
+      {
+         String section = m.group();
+         int degree = Integer.parseInt(section.substring(section.indexOf('^')));
+         //do something else
+      }
 //       else if(true)//Needs modification
 //       {
 //          //check for linear
