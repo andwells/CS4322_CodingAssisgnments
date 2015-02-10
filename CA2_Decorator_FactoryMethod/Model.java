@@ -4,7 +4,7 @@ public abstract class Model
   protected abstract Function createFunction(String func);
   
   protected boolean isLegalChar(char aChar)
-  {//start
+  {
       if(aChar >= 40 && aChar <= 43)
    	{
    		return true;
