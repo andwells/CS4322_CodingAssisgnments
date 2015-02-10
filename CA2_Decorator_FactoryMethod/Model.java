@@ -40,7 +40,6 @@ public abstract class Model
       yValues[i] = f.evaluate(xValues[i]);
     }  
     return yValues;
-
   }
   
 }
