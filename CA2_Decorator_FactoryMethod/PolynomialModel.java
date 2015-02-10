@@ -1,9 +1,19 @@
 import java.util.ArrayList;
 public class PolynomialModel extends Model
 {
- 
-  protected Function createFunction(String func)
-  {
+   private int degree;
+   public PolynomialModel()
+   {
+      degree = 0;
+   }
+   
+   public PolynomialModel(int deg)
+   {
+      degree = deg;
+   }
+   
+   protected Function createFunction(String func)
+   {
       char firstVar = ' ';
       ArrayList<Function> parts = new ArrayList<Function>();
 
@@ -28,5 +38,5 @@ public class PolynomialModel extends Model
       	}
       }
     return null;
-  }
+   }
 }
