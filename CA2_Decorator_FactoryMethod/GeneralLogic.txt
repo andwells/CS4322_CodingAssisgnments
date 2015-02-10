@@ -17,3 +17,18 @@ constant
 
 //end
 new add/subtract(left side, new Constant(endConst));
+
+
+Lee's logic parser
+
+Check for exponenet in string expression.
+  If yes
+    Find Highest Power
+    Evaluate Polynomial func
+  If no
+    Check for linear
+      If yes
+        Evaluate Linear func
+      If no
+        Evaluate Constant func
+        
