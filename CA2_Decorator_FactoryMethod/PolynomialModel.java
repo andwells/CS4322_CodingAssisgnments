@@ -12,48 +12,70 @@ public class PolynomialModel extends Model
       
       Matcher powerMatch = power.matcher(func);
       Matcher linearMatch = linear.matcher(func);
+      Matcher constMatch = constant.matcher(func);
       if(powerMatch.find())
       {
+         
          String section = powerMatch.group();
          int degree = Integer.parseInt(section.substring(section.indexOf('^')));
-         //do something else
+         powerMatch.reset();
+         
+         while(powerMatch.find())
+         {
+            String part = powerMatch.group();
+         }
+         //Unfinished
       }
-//       else if(true)//Needs modification
-//       {
-//          //check for linear
-//       }
-//       else if(true) //Needs modification
-//       {
-//          //Check for constant
-//       }
-//       else
-//       {
-//          
-//       }
+      else if(linearMatch.find())//Needs modification
+      {
+         Matcher numbers = Pattern.compile("(\\p{Digit})+").matcher(func);
+         int numFound = 0;
+         if(numbers.find())
+         {
+            numFound = Integer.parseInt(numbers.group());
+            Function f = new Constant(numFound);
+         }
+         
+         Matcher letter = Pattern.compile("\\p{Alpha}").matcher(func);
+         letter.find();
+         
+         Function f2 = new Variable();
+         String remainder = "";
+         
+         
+      }
+      else if(constMatch.find()) //Needs modification
+      {
+         return new Constant(Integer.parseInt(func));
+      }
+      else
+      {
+         //throw error
+      }
       
       char firstVar = ' ';
       ArrayList<Function> parts = new ArrayList<Function>();
 
-      for(int i = 0; i < func.length();i++)
-      {
-         char currentChar = func.charAt(i);
-      	if(isLegalChar(currentChar))
-      	{
-            if(Character.isAlphabetic(currentChar) && currentChar == firstVar)
-            {
-               //throw exception
-            }
-            else if (Character.isAlphabetic(currentChar))
-            {
-               firstVar = currentChar;
-            }
-      		//do something
-      	}
-      	else
-      	{
-            //throw exception 
-      	}
-      }
+      // for(int i = 0; i < func.length();i++)
+//       {
+//          char currentChar = func.charAt(i);
+//       	if(isLegalChar(currentChar))
+//       	{
+//             if(Character.isAlphabetic(currentChar) && currentChar == firstVar)
+//             {
+//                //throw exception
+//             }
+//             else if (Character.isAlphabetic(currentChar))
+//             {
+//                firstVar = currentChar;
+//             }
+//       		//do something
+//       	}
+//       	else
+//       	{
+//             //throw exception 
+//       	}
+//       }
     return null;
    }
 }
