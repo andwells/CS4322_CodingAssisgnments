@@ -7,8 +7,7 @@ public class PolynomialModel extends Model
    protected Function createFunction(String func)
    {
       Pattern p = Pattern.compile("\\p{Alpha}\\^\\p{Digit}");
-      Pattern p2 = Pattern.compile("\\p{Alpha}\\^\\p{Digit}(\\+|\\-)\\p{Alpha}\\^\\p{Digit}(\\+|\\-)\\p{Digit}");
-      Pattern p3 = Pattern.compile("\\p{Alpha}(\\+|\\-)\\p{Digit}");
+      Pattern p3 = Pattern.compile("\\p{Alpha}(\\+|\\-)?(\\p{Digit})?");
       Pattern p4 = Pattern.compile("^\\b\\p{Digit}\\b$");
       
       // Matcher m = p.matcher(func);
