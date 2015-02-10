@@ -3,15 +3,11 @@ import java.util.regex.*;
 public class PolynomialModel extends Model
 {
    private int degree;
-   public PolynomialModel()
-   {
-      degree = 0;
-   }
    
    protected Function createFunction(String func)
    {
       Pattern p = Pattern.compile("\\p{Alpha}\\^\\p{Digit}");
-      Pattern p2 = Pattern.compile("\\p{Alpha}\\^\\p{Digit}{2,}");
+      Pattern p2 = Pattern.compile("\\p{Alpha}\\^\\p{Digit}(\\+|\\-)\\p{Alpha}\\^\\p{Digit}(\\+|\\-)\\p{Digit}");
       Pattern p3 = Pattern.compile("\\p{Alpha}(\\+|\\-)\\p{Digit}");
       Pattern p4 = Pattern.compile("^\\b\\p{Digit}\\b$");
       
