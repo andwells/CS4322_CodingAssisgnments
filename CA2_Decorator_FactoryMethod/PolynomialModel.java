@@ -1,6 +1,7 @@
 import java.util.ArrayList;
-public class CubeModel extends Model{
-  
+public class PolynomialModel extends Model
+{
+ 
   protected Function createFunction(String func)
   {
       char firstVar = ' ';
