@@ -16,6 +16,6 @@ public class Addition extends Function
    
    public void setRight(Function right)
    {
-      this.rightSide = right;
+      rightSide = right;
    }
 }
