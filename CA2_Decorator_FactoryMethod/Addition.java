@@ -1,4 +1,4 @@
-public class Addition extends Function
+public class Addition extends Function implements Modifiable
 {
    private Function leftSide;
    private Function rightSide;

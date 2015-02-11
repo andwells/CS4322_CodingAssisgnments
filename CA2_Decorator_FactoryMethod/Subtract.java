@@ -1,4 +1,4 @@
-public class Subtract extends Function
+public class Subtract extends Function implements Modifiable
 {
    private Function leftSide;
    private Function rightSide;
