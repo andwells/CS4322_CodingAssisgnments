@@ -13,4 +13,9 @@ public class Addition extends Function
    {
       return leftSide.evaluate(at) + rightSide.evaluate(at);
    }
+   
+   public void setRight(Function right)
+   {
+      this.rightSide = right;
+   }
 }
