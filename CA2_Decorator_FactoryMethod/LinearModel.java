@@ -15,18 +15,35 @@ public class PolynomialModel extends Model
       if(linearMatch.find())//Needs modification
       {
          
-         int numFound = 0;
+         int numFound = 1;
          if(numsMatch.find())
          {
             numFound = Integer.parseInt(numsMatch.group());
             Function f = new Constant(numFound);
          }
          
-         Matcher letter = Pattern.compile("\\p{Alpha}").matcher(func);
-         letter.find();
+         //Matcher letter = Pattern.compile("\\p{Alpha}").matcher(func);
+         //letter.find();
          
          Function f2 = new Variable();
          String remainder = "";
+         
+         Function mult = new Multiply(new Constant(number), f2);
+         
+         char sign = func.charAt(linearMatch.end());
+            Modifiable plusMinus;
+            if(prevSign != null)
+            {
+               if(sign == '+')
+               {
+                  plusMinus = new Addition(mult, null);
+               }
+               else if(sign == '-')
+               {
+                  plusMinus = new Subtract(mult, null);
+               }
+
+            }
       }
       else
       {
