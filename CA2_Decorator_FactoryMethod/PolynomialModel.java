@@ -6,16 +6,15 @@ public class PolynomialModel extends Model
    
    protected Function createFunction(String func)
    {
-      String cleanedString = func.replace("_", "");
-      
+      String cleanedFunc = func.replace(" ", "");
       
       Pattern power = Pattern.compile("(\\p{Digit})*\\p{Alpha}\\^(\\p{Digit})");
       Pattern linear = Pattern.compile("(\\p{Digit})*\\p{Alpha}((\\+|\\-)(\\p{Digit})+)?");
-      Pattern numbers = Pattern.compile("\\p{Digit}+");
+      Pattern numbers = Pattern.compile("[^\\^]\\p{Digit}+");
       
-      Matcher powerMatch = power.matcher(func);
-      Matcher linearMatch = linear.matcher(func);
-      Matcher numsMatch = numbers.matcher(func);
+      Matcher powerMatch = power.matcher(cleanedFunc);
+      Matcher linearMatch = linear.matcher(cleanedFunc);
+      Matcher numsMatch = numbers.matcher(cleanedFunc);
       
             
       if(powerMatch.find())
@@ -42,58 +41,69 @@ public class PolynomialModel extends Model
             Function exp = new Exponent(variable, curPow);
             Function mult = new Multiply(new Constant(number), exp);
             
-            if(prevSign != null)
-            {
-               prevSign.setRight(mult);
-            }
-            
-            char sign = func.charAt(powerMatch.end());
+                        
+            char sign = cleanedFunc.charAt(powerMatch.end());
             Modifiable plusMinus;
-            if(prevSign != null)
+            if(prevSign == null)
             {
                if(sign == '+')
                {
                   plusMinus = new Addition(mult, null);
                }
-               else if(sign == '-')
+               else
                {
                   plusMinus = new Subtract(mult, null);
                }
-
             }
             else
             {
-               /*Logic may need to be refined.
-               In this case, we are assuming that if no sign is found it's the end of the function*/
-               return ;
+               prevSign.setRight(mult);
+               if(sign == '+')
+               {
+                  plusMinus = new Addition((Function)prevSign, null);
+               }
+               else
+               {
+                  plusMinus = new Subtract((Function)prevSign, null);
+               }
             }
+            prevSign = plusMinus;
             
          }
-         //Unfinished
+         //Start linear parsing
+         int start = powerMatch.end();
+         String part = cleanedFunc.substring(start);
+         
+         Matcher linMatch = numbers.matcher(part);
+         
+         int mult = 1;
+         if(linMatch.find())
+         {
+            mult = Integer.parseInt(linMatch.group());
+         }
+         
+         Function c = new Constant(mult);
+         Function var = new Variable();
+         Function multi = new Multiply(c, var);
+         
+         int addSub = 0;
+         Modifiable plusMin;
+         if(part.contains("+"))
+         {
+            addSub = Integer.parseInt(part.split("+")[1]);
+            plusMin = new Addition(multi, new Constant(addSub));
+         }
+         else
+         {
+            addSub = Integer.parseInt(part.split("-")[1]);
+            plusMin = new Subtract(multi, new Constant(addSub));
+         }
+         
+         prevSign.setRight((Function)plusMin);
+         
+         
+         return (Function)prevSign;
       } 
-//       char firstVar = ' ';
-//       ArrayList<Function> parts = new ArrayList<Function>();
-// 
-//       for(int i = 0; i < func.length();i++)
-//       {
-//          char currentChar = func.charAt(i);
-//       	if(isLegalChar(currentChar))
-//       	{
-//             if(Character.isAlphabetic(currentChar) && currentChar == firstVar)
-//             {
-//                //throw exception
-//             }
-//             else if (Character.isAlphabetic(currentChar))
-//             {
-//                firstVar = currentChar;
-//             }
-//       		//do something
-//       	}
-//       	else
-//       	{
-//             //throw exception 
-//       	}
-//       }
-    return null;
+      return null;
    }
 }
