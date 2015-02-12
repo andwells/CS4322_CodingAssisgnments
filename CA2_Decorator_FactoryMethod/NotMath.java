@@ -7,8 +7,7 @@ public class NotMath{
     String problem1 = "3x^3 + 2x^2 + x + 1";
     String problem2 = "20x + 15";
     String problem3 = "4322";
-    
-    System.out.println("\u037E, ;");
+
     /*CheckString(problem1);
     CheckString(problem2);
     CheckString(problem3);*/

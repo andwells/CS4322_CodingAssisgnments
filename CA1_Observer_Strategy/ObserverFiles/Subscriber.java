@@ -4,51 +4,65 @@ import java.util.Comparator;
 public class Subscriber implements Subscription
 {
    private String subscriberName;
+   private Content content;
    
    //Comparators for sorting
-   Comparator<PressRelease> byName;
-   Comparator<PressRelease> byDate;
-   Comparator<PressRelease> byCategory;
+   private Comparator<PressRelease> byName;
+   private Comparator<PressRelease> byDate;
+   private Comparator<PressRelease> byCategory;
    
-   public Subscriber(String name)
+   public Subscriber(String name, Content cp)
    {
+      content = cp;
+      
       subscriberName = name;
       byName = new byNameComparator();
       byDate = new byDateComparator();
       byCategory = new byCategoryComparator();
+      
+      content.subscribe(this);
    }
    
    public void update(Object arg)
    {      
       if(arg instanceof ArrayList)
       {
-         System.out.printf("\n\nNew updates have been seen by %s! Printing data...\n", this.subscriberName);
-         ArrayList<PressRelease> temp1 = (ArrayList<PressRelease>)arg;
-         Collections.sort(temp1, byName);
-         
-         System.out.println("\n***\tMovies sorted by Name\t***");
-         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
-         for(PressRelease pr : temp1)
-         {
-            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
-         }
-         
-         System.out.println("\n***\tMovies sorted by Newest Release Year\t***");
-         Collections.sort(temp1, byDate);//Sort items by year
-         Collections.reverse(temp1);//Put newest releases first
-         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
-         for(PressRelease pr : temp1)
-         {
-            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
-         }
-         
-         System.out.println("\n***\tMovies sorted by Category\t***");
-         System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
-         Collections.sort(temp1, byCategory);
-         for(PressRelease pr : temp1)
-         {
-            System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
-         }
+         printPressRelease((ArrayList<PressRelease>)arg);
+      }
+      else if(arg == null)
+      {
+         printPressRelease(content.deliverAllContent());
+      }
+   }
+   
+   private void printPressRelease(ArrayList<PressRelease> arg)
+   {
+      System.out.printf("\n\nNew updates have been seen by %s! Printing data...\n", this.subscriberName);
+      ArrayList<PressRelease> temp1 = (ArrayList<PressRelease>)arg;
+      Collections.sort(temp1, byName);
+      
+      System.out.println("\n***\tMovies sorted by Name\t***");
+      System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
+      for(PressRelease pr : temp1)
+      {
+         System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+      }
+      
+      System.out.println("\n***\tMovies sorted by Newest Release Year\t***");
+      Collections.sort(temp1, byDate);//Sort items by year
+      Collections.reverse(temp1);//Put newest releases first
+      System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
+      for(PressRelease pr : temp1)
+      {
+         System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
+      }
+      
+      System.out.println("\n***\tMovies sorted by Category\t***");
+      System.out.printf("%-50s\t%-14s\t%-10s\n", "Title", "Release Date", "Category");
+      Collections.sort(temp1, byCategory);
+      for(PressRelease pr : temp1)
+      {
+         System.out.printf("%-50s\t%-14s\t%-10s%n", pr.getName(), pr.getReleaseDate(), pr.getCategory());
       }
    }
    

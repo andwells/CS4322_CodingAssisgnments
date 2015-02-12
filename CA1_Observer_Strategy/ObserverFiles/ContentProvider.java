@@ -21,21 +21,35 @@ public class ContentProvider implements Content
    
    public void setThreshold(Integer newThreshold)
    {
-      if(newThreshold>0)
+      if(newThreshold > 0)
          notifyThreshold = newThreshold;
    }
    
-   public void notifySubscribers()
+   public void notifySubscribers(Object arg)
    {
+      
       if(isChanged)
       {
          for(Subscription sub : subscribers)
          {
-            sub.update(new ArrayList<PressRelease>(newsBuffer));
+            sub.update(arg);
          }
          newsBuffer.clear();
          isChanged = false;
       }
+   }
+   
+   public void notifySubscribers()
+   {
+//       if(isChanged)
+//       {
+         for(Subscription sub : subscribers)
+         {
+            sub.update(null);
+         }
+//         newsBuffer.clear();
+//         isChanged = false;
+//      }
    }
    
    public Boolean subscribe(Subscription aSubscription)
@@ -57,23 +71,25 @@ public class ContentProvider implements Content
       }
    }
 
+   public ArrayList<PressRelease> deliverAllContent()
+   {
+      return new ArrayList<PressRelease>(newsBuffer);
+   }
    
-   public boolean readFromFile()
+   private boolean readFromFile()
    {
       String line;
       if(scan.hasNext())
       {
          line = scan.nextLine();
          String[] movieDetails = line.split("::");
-         PressRelease movie = new PressRelease(movieDetails[0], Integer.parseInt(movieDetails[1]), movieDetails[2]);
-         
-         
+         PressRelease movie = new PressRelease(movieDetails[0], Integer.parseInt(movieDetails[1]), movieDetails[2]);       
          
          newsBuffer.add(movie);
          setChanged();
          if(isChanged)
          {
-            notifySubscribers();
+            notifySubscribers(newsBuffer);
          }
          
          return true;

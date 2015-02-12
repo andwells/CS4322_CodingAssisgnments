@@ -6,11 +6,12 @@ public class SubscriberDriver
       try
       {
          Content cp = new ContentProvider();
-         Subscription s1 = new Subscriber("Peter");
-         Subscription s2 = new Subscriber2("Andrew");
-         cp.subscribe(s1);
-         cp.subscribe(s2);
+         Subscription s1 = new Subscriber("Peter", cp);
+         Subscription s2 = new Subscriber2("Andrew", cp);
          cp.start();
+         System.out.println("\n\nCalling pull notification\n\n");
+         
+         cp.notifySubscribers();
       }
       catch(Exception ex)
       {
