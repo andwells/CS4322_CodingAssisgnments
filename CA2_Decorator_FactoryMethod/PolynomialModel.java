@@ -10,18 +10,19 @@ public class PolynomialModel extends Model
       
       Pattern power = Pattern.compile("(\\p{Digit})*\\p{Alpha}\\^(\\p{Digit})");
       Pattern linear = Pattern.compile("(\\p{Digit})*\\p{Alpha}((\\+|\\-)(\\p{Digit})+)?");
-      Pattern numbers = Pattern.compile("[^\\^]\\p{Digit}+");
+      Pattern numbers = Pattern.compile("\\p{Digit}+");
       
       Matcher powerMatch = power.matcher(cleanedFunc);
-      Matcher linearMatch = linear.matcher(cleanedFunc);
       Matcher numsMatch = numbers.matcher(cleanedFunc);
       
             
       if(powerMatch.find())
       {//start   
          powerMatch.reset();
-         int previousPow = Integer.MIN_VALUE;
+         int previousPow = Integer.MAX_VALUE;
          Modifiable prevSign = null;
+         
+         int endOfMatch = 0;
          while(powerMatch.find())
          {//while
             String part = powerMatch.group();
@@ -31,12 +32,16 @@ public class PolynomialModel extends Model
             if(numsMatch.find())
             {
                number = Integer.parseInt(numsMatch.group());
-               if(number >= previousPow)
+               if(previousPow == Integer.MAX_VALUE)
+               {
+                  previousPow = number;
+               }
+               else if(number >= previousPow)
                {
                   //throw malformed excepiton
                }
             }
-            int curPow = Integer.parseInt(part.split("^")[1]);
+            int curPow = Integer.parseInt(part.split("\\^")[1]);
             Function variable = new Variable();
             Function exp = new Exponent(variable, curPow);
             Function mult = new Multiply(new Constant(number), exp);
@@ -68,10 +73,10 @@ public class PolynomialModel extends Model
                }
             }
             prevSign = plusMinus;
-            
+            endOfMatch = powerMatch.end();
          }
          //Start linear parsing
-         int start = powerMatch.end();
+         int start = (endOfMatch + 1);
          String part = cleanedFunc.substring(start);
          
          Matcher linMatch = numbers.matcher(part);
@@ -90,7 +95,7 @@ public class PolynomialModel extends Model
          Modifiable plusMin;
          if(part.contains("+"))
          {
-            addSub = Integer.parseInt(part.split("+")[1]);
+            addSub = Integer.parseInt(part.split("\\+")[1]);
             plusMin = new Addition(multi, new Constant(addSub));
          }
          else
