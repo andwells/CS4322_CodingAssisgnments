@@ -1,0 +1,26 @@
+TYPICAL EXPRESSION
+
+3x^3 + 2x^2 + x + 1
+
+
+
+RULE FOR POWER
+
+look for ^
+look at left side
+store digit(s) i.e. coefficient = digit(s) before 'x'
+look at right side
+store exponent i.e exponent = digit(s) after '^' and before '+'
+replace power with
+coefficent*exponent - 1
+append x ^ exponent - 1
+
+
+RULE FOR LINEAR
+replace x with 1
+
+
+
+RULE FOR CONSTANT
+if isDigit() = true
+  replace with 0
