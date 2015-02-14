@@ -3,23 +3,7 @@ import java.util.regex.*;
 public class PolynomialModel extends Model
 {
    private int degree;
-   // var 1
-   // var 2
-   // var 3
-   // ArrayList containing three var
    
-   // protected void Parse(String func){
-   //   
-   // }
-   
-   // protected Function createFunction(ArrayList or var1, var2, var3){
-   //    put pieces together  
-   // }
-   
-   // protected Function createDerivative(ArrayList or var1, var2, var3){
-   //    manipulate pieces ie.  var1 = 3x^3  is now 3*3x^2 or 9x^2
-   //    put pieces together(return der function) or return ArrayList and call create function
-   // }
    protected Function createFunction(String func)
    {
       String cleanedFunc = func.replace(" ", "");
