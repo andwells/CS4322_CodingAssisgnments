@@ -49,23 +49,25 @@ public class PolynomialModel extends Model
                   }
                   else if(prevVar != curVar)
                   {
-                     //Could be replaced with a more meaningful exception
-                     throw new InputMismatchException();
+                     throw new InputMismatchException("Multi-variable function entered.");
                   }
                }
             }
             
-            int curPow = Integer.parseInt(part.split("\\^")[1]);
-                        
+            int curPow = Integer.parseInt(part.split("\\^")[1]);          
             if(previousPow == Integer.MAX_VALUE)
             {
                previousPow = curPow;
             }
             else if(curPow >= previousPow)
             {
-               //Could be replaced with a more meaningful exception
-               throw new InputMismatchException();
+               throw new InputMismatchException("Powers not entered in descending format");
             }
+            else if(curPow != (previousPow - 1))
+            {
+               throw new InputMismatchException("Powers not entered in form of n, n-1, n-2...");
+            }
+            previousPow = curPow;
             Function variable = new Variable();
             Function exp = new Exponent(variable, curPow);
             Function mult = new Multiply(new Constant(number), exp);
@@ -130,7 +132,7 @@ public class PolynomialModel extends Model
          //Joins previous expression with the expression that was just created
          prevSign.setRight((Function)plusMin);
                   
-         return (Function)prevSign;
+         return prevSign;
       } 
       return null;
    }

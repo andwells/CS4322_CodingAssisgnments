@@ -8,6 +8,7 @@ public class NotMath{
     String problem2 = "20x + 15";
     String problem3 = "4322";
     Model mod = new PolynomialModel();
+    Model mod2 = new LinearModel();
     
     double[] x = new double[] {1.0, 2.0, 3.0};
     
