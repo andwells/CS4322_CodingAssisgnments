@@ -1,4 +1,4 @@
-public class Exponent extends Function
+public class Exponent extends Connector
 {
    private Function leftSide;
    private int power;
@@ -12,5 +12,10 @@ public class Exponent extends Function
    public double evaluate(double at)
    {
       return Math.pow(leftSide.evaluate(at), power);
+   }
+   
+   public void setRight(Function setRight)
+   {
+      //does nothing
    }
 }

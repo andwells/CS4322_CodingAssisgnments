@@ -19,7 +19,7 @@ public class PolynomialModel extends Model
       {
          powerMatch.reset();//Move to beginning because of find()
          int previousPow = Integer.MAX_VALUE;
-         Modifiable prevSign = null;
+         Connector prevSign = null;
          char prevVar = ' ';
          
          /*This is declared so that after all items of the form cx^n are found,
@@ -71,7 +71,7 @@ public class PolynomialModel extends Model
             Function mult = new Multiply(new Constant(number), exp);
                         
             char sign = cleanedFunc.charAt(powerMatch.end());
-            Modifiable plusMinus;
+            Connector plusMinus;
             if(prevSign == null)
             {
                if(sign == '+')
@@ -115,7 +115,7 @@ public class PolynomialModel extends Model
          Function multi = new Multiply(c, var);
          
          int addSub = 0;
-         Modifiable plusMin;
+         Connector plusMin;
          if(part.contains("+"))
          {
             addSub = Integer.parseInt(part.split("\\+")[1]);

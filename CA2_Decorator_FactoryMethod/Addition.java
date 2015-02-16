@@ -1,4 +1,4 @@
-public class Addition extends Function implements Modifiable
+public class Addition extends Connector
 {
    private Function leftSide;
    private Function rightSide;
