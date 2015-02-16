@@ -1,10 +1,8 @@
 public abstract class Model
 {
-  
-  protected abstract Function createFunction(String func);
-  
-  protected boolean isLegalChar(char aChar)
-  {
+   protected abstract Function createFunction(String func);
+   protected boolean isLegalChar(char aChar)
+   {
       if(aChar >= 40 && aChar <= 43)
    	{
    		return true;
@@ -30,16 +28,16 @@ public abstract class Model
    		return false;
    	} 		
    }
-  
-  public double[] evaluate(String func, double[] xValues)
-  {
-    Function f = createFunction(func);
-    double[] yValues = new double[xValues.length];
-    for(int i = 0; i < yValues.length;i++)
-    {
-      yValues[i] = f.evaluate(xValues[i]);
-    }  
-    return yValues;
-  }
-  
+   
+   public double[] evaluate(String func, double[] xValues)
+   {
+      String cleanedFunc = func.replace(" ", "");
+      Function f = createFunction(cleanedFunc);
+      double[] yValues = new double[xValues.length];
+      for(int i = 0; i < yValues.length;i++)
+      {
+         yValues[i] = f.evaluate(xValues[i]);
+      }  
+      return yValues;
+   }
 }

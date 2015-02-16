@@ -4,5 +4,4 @@ public class Variable extends Function
    {
       return at;
    }
-   
 }

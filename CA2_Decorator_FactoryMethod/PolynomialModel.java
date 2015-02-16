@@ -4,15 +4,13 @@ import java.util.InputMismatchException;
 public class PolynomialModel extends Model
 {  
    protected Function createFunction(String func)
-   {
-      String cleanedFunc = func.replace(" ", "");
-      
+   {      
       //Patterns for checking different expressions in an equations
       Pattern power = Pattern.compile("(\\p{Digit})*\\p{Alpha}\\^(\\p{Digit})");
       Pattern linear = Pattern.compile("(\\p{Digit})*\\p{Alpha}((\\+|\\-)(\\p{Digit})+)?");
       Pattern numbers = Pattern.compile("\\p{Digit}+");
       
-      Matcher powerMatch = power.matcher(cleanedFunc);
+      Matcher powerMatch = power.matcher(func);
       Matcher numsMatch;
                   
       if(powerMatch.find())
@@ -37,7 +35,7 @@ public class PolynomialModel extends Model
                number = Integer.parseInt(numsMatch.group());
             }
             
-            for(int i = 0; i < part.length(); i++)
+            for(int i = 0; i < part.length(); i++)//Checks to make sure that this section uses the same variable character
             {
                if(Character.isLetter(part.charAt(i)))
                {
@@ -49,8 +47,7 @@ public class PolynomialModel extends Model
                   }
                   else if(prevVar != curVar)
                   {
-                     //Could be replaced with a more meaningful exception
-                     throw new InputMismatchException();
+                     throw new InputMismatchException("Multiples variables entered into single-varaiable equation.");
                   }
                }
             }
@@ -61,18 +58,29 @@ public class PolynomialModel extends Model
             {
                previousPow = curPow;
             }
-            else if(curPow >= previousPow)
+            else
             {
+               if(curPow >= previousPow)
+               {
                //Could be replaced with a more meaningful exception
-               throw new InputMismatchException();
+               throw new InputMismatchException("Powers of terms not entered in descending order.");
+               }
+               else if(curPow != (previousPow - 1))
+               {
+                  //Could be replaced with a more meaningful exception
+                  throw new InputMismatchException("Powers not entered in format of n, n-1, n-2...");
+               }
+               previousPow = curPow;
             }
+                        
             Function variable = new Variable();
             Function exp = new Exponent(variable, curPow);
             Function mult = new Multiply(new Constant(number), exp);
                         
-            char sign = cleanedFunc.charAt(powerMatch.end());
+            char sign = func.charAt(powerMatch.end());
             Modifiable plusMinus;
-            if(prevSign == null)
+            
+            if(prevSign == null)//If this is the first connector (+ or -) that we've found, signify this
             {
                if(sign == '+')
                {
@@ -83,7 +91,7 @@ public class PolynomialModel extends Model
                   plusMinus = new Subtract(mult, null);
                }
             }
-            else
+            else//Otherwise, connect this expression with the previous one
             {
                prevSign.setRight(mult);
                if(sign == '+')
@@ -100,7 +108,7 @@ public class PolynomialModel extends Model
          }
          //Start linear parsing
          int start = (endOfMatch + 1);
-         String part = cleanedFunc.substring(start);
+         String part = func.substring(start);
          
          Matcher linMatch = numbers.matcher(part);
          
@@ -132,6 +140,9 @@ public class PolynomialModel extends Model
                   
          return (Function)prevSign;
       } 
-      return null;
+      else
+      {
+         throw new InputMismatchException("Could not find a polynomial expression");
+      }
    }
 }
