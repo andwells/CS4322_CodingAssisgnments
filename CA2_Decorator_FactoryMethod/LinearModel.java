@@ -1,7 +1,6 @@
-import java.util.InputMismatchException;
 import java.util.ArrayList;
 import java.util.regex.*;
-public class LinearModel extends Model
+public class PolynomialModel extends Model
 {
    private int degree;
    
@@ -20,33 +19,36 @@ public class LinearModel extends Model
          if(numsMatch.find())
          {
             numFound = Integer.parseInt(numsMatch.group());
+            Function f = new Constant(numFound);
          }
          
-         Function f = new Constant(numFound);                  
+         //Matcher letter = Pattern.compile("\\p{Alpha}").matcher(func);
+         //letter.find();
+         
          Function f2 = new Variable();
          String remainder = "";
          
-         Function mult = new Multiply(new Constant(numFound), f2);
+         Function mult = new Multiply(new Constant(number), f2);
          
-         
-         int addSub = 0;
-         Modifiable plusMin;
-         if(func.contains("+"))
-         {
-            addSub = Integer.parseInt(func.split("\\+")[1]);
-            plusMin = new Addition(mult, new Constant(addSub));
-         }
-         else
-         {
-            addSub = Integer.parseInt(func.split("-")[1]);
-            plusMin = new Subtract(mult, new Constant(addSub));
-         }
-         
-         return (Function) plusMin;
+         char sign = func.charAt(linearMatch.end());
+            Modifiable plusMinus;
+            if(prevSign != null)
+            {
+               if(sign == '+')
+               {
+                  plusMinus = new Addition(mult, null);
+               }
+               else if(sign == '-')
+               {
+                  plusMinus = new Subtract(mult, null);
+               }
+
+            }
       }
       else
       {
-         throw new InputMismatchException("Could not find a linear expression.");
+         //throw error
       }
+    return null;
    }
 }
