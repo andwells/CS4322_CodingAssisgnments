@@ -1,51 +1,74 @@
 import java.util.ArrayList;
 import java.util.regex.*;
+import java.util.InputMismatchException;
 public class PolynomialModel extends Model
-{
-   private int degree;
-   
+{  
    protected Function createFunction(String func)
    {
       String cleanedFunc = func.replace(" ", "");
       
+      //Patterns for checking different expressions in an equations
       Pattern power = Pattern.compile("(\\p{Digit})*\\p{Alpha}\\^(\\p{Digit})");
       Pattern linear = Pattern.compile("(\\p{Digit})*\\p{Alpha}((\\+|\\-)(\\p{Digit})+)?");
       Pattern numbers = Pattern.compile("\\p{Digit}+");
       
       Matcher powerMatch = power.matcher(cleanedFunc);
-      Matcher numsMatch = numbers.matcher(cleanedFunc);
-      
-            
+      Matcher numsMatch;
+                  
       if(powerMatch.find())
-      {//start   
-         powerMatch.reset();
+      {
+         powerMatch.reset();//Move to beginning because of find()
          int previousPow = Integer.MAX_VALUE;
          Modifiable prevSign = null;
+         char prevVar = ' ';
          
+         /*This is declared so that after all items of the form cx^n are found,
+         we can determine where to start looking for where the linear part of the equation starts*/
          int endOfMatch = 0;
-         while(powerMatch.find())
-         {//while
+         
+         while(powerMatch.find())//Looks for all items of the form cx^n
+         {
             String part = powerMatch.group();
-            String numsFound = "";
+            
             int number = 1;
             numsMatch = numbers.matcher(part);
             if(numsMatch.find())
             {
                number = Integer.parseInt(numsMatch.group());
-               if(previousPow == Integer.MAX_VALUE)
+            }
+            
+            for(int i = 0; i < part.length(); i++)
+            {
+               if(Character.isLetter(part.charAt(i)))
                {
-                  previousPow = number;
-               }
-               else if(number >= previousPow)
-               {
-                  //throw malformed excepiton
+                  char curVar = part.charAt(i);
+                  
+                  if(prevVar == ' ')
+                  {
+                     prevVar = curVar;
+                  }
+                  else if(prevVar != curVar)
+                  {
+                     //Could be replaced with a more meaningful exception
+                     throw new InputMismatchException();
+                  }
                }
             }
+            
             int curPow = Integer.parseInt(part.split("\\^")[1]);
+                        
+            if(previousPow == Integer.MAX_VALUE)
+            {
+               previousPow = curPow;
+            }
+            else if(curPow >= previousPow)
+            {
+               //Could be replaced with a more meaningful exception
+               throw new InputMismatchException();
+            }
             Function variable = new Variable();
             Function exp = new Exponent(variable, curPow);
             Function mult = new Multiply(new Constant(number), exp);
-            
                         
             char sign = cleanedFunc.charAt(powerMatch.end());
             Modifiable plusMinus;
@@ -104,9 +127,9 @@ public class PolynomialModel extends Model
             plusMin = new Subtract(multi, new Constant(addSub));
          }
          
+         //Joins previous expression with the expression that was just created
          prevSign.setRight((Function)plusMin);
-         
-         
+                  
          return (Function)prevSign;
       } 
       return null;
