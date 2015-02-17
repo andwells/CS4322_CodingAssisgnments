@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.regex.*;
 import java.util.InputMismatchException;
-public class PolynomialModel extends Model
+public class PolynomialDerivativeModel extends Model
 {  
    protected Function createFunction(String func)
    {
@@ -113,7 +113,7 @@ public class PolynomialModel extends Model
          }
          
          Function c = new Constant(mult);
-         Function c2 = new Constant(1)
+         Function c2 = new Constant(1);
          //Function var = new Variable();
          Function multi = new Multiply(c, c2);
          

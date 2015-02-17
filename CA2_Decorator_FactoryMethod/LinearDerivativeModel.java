@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.regex.*;
 import java.util.InputMismatchException;
-public class LinearModel extends Model
+public class LinearDerivativeModel extends Model
 {
    private int degree;
    
@@ -17,32 +17,14 @@ public class LinearModel extends Model
       {
          
          int numFound = 1;
+         Function f = null;
          if(numsMatch.find())
          {
             numFound = Integer.parseInt(numsMatch.group());
-            Function f = new Constant(numFound);
+            f = new Constant(numFound);
          }
          
-         //Function f2 = new Variable();
-         Function f2 = new Constant(1);
-         String remainder = "";
-         
-         Function mult = new Multiply(new Constant(numFound), f2);
-         
-         char sign = func.charAt(linearMatch.end());
-         Connector plusMin;
-         int addSub = 0;
-         if(func.contains("+"))
-         {
-            //addSub = Integer.parseInt(func.split("\\+")[1]);
-            plusMin = new Addition(mult, new Constant(addSub));
-         }
-         else
-         {
-            //addSub = Integer.parseInt(func.split("-")[1]);
-            plusMin = new Subtract(mult, new Constant(addSub));
-         }
-         return plusMin;
+         return f;
       }
       else
       {

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.regex.*;
 import java.util.InputMismatchException;
-public class ConstantModel extends Model
+public class ConstantDerivativeModel extends Model
 {
    private int degree;
    
