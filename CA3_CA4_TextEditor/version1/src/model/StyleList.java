@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.LinkedList;
 
 public class StyleList extends LinkedList<LengthStyle>
@@ -41,6 +42,22 @@ public class StyleList extends LinkedList<LengthStyle>
 		return result;
 	}
 	
+	public void setColor(int start, int length, Color aColor)
+	{
+		addStyleToRange(start, length, StyleCreator.getColorStyle(aColor));
+	}
+	
+	//Not implemented
+	public boolean isColor(int index, Color aColor)
+	{
+		return false;
+	}
+	
+	//Not implemented
+	public boolean isRangeColor(int start, int length, Color aColor)
+	{
+		return false;
+	}
 	
 	public void setBold(int start, int length, boolean boldOn)
 	{

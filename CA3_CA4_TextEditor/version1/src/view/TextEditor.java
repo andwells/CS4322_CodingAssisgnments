@@ -17,7 +17,9 @@ public class TextEditor
 		
 		addComponents(frame);
 
+		
 		frame.pack();
+		frame.setSize(450,450);
 		frame.setVisible(true);
 	}
 	

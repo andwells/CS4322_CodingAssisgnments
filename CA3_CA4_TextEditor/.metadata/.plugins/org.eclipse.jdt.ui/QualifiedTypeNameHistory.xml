@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="controller.command.TextCommand"/>
+<fullyQualifiedTypeName name="javax.swing.JColorChooser"/>
+<fullyQualifiedTypeName name="model.TextEditorModel"/>
+<fullyQualifiedTypeName name="javax.jws.WebParam.Mode"/>
+<fullyQualifiedTypeName name="javax.swing.text.Document"/>
+<fullyQualifiedTypeName name="javax.swing.text.MutableAttributeSet"/>
+<fullyQualifiedTypeName name="javax.swing.text.StyleConstants"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
+<fullyQualifiedTypeName name="javax.swing.text.StyleConstants.ColorConstants"/>
 </qualifiedTypeNameHistroy>

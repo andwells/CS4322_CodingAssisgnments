@@ -27,6 +27,7 @@ import java.util.Observable;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JColorChooser;
 import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -40,15 +41,17 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javax.swing.text.Keymap;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.StyleConstants;
 
 
 public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 {
 //	private static String iconPath = "bin/view/icons/";
 //	private static String iconPath = "E:\\Data-Classes\\CS 4322 - Software Engineering 2\\Assignments\\Spring 13\\04\\StudentTextEditorEclipse\\StudentTextEditor\\bin\\view\\icons\\";
-//	private static String iconPath = TextEditorPanel.class.getResource("icons/").getPath();
+	private static String iconPath = TextEditorPanel.class.getResource("icons/").getPath();
 //	private static String iconPath = "\\StudentTextEditor\\bin\\view\\icons\\";
-	private static String iconPath = "C:\\Users\\Lee\\Desktop\\CA3_TextEditor\\version1\\bin\\view\\icons\\";
+//	private static String iconPath = "C:\\Users\\Lee\\Desktop\\CA3_TextEditor\\version1\\bin\\view\\icons\\";
 	
 	private JTextEditor text;
 	
@@ -57,12 +60,14 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	private JButton undoButton;
 	private JButton redoButton;
+	private JButton colorButton;
 	
 	private BoldActionListener boldAct;
 	private ItalicActionListener italicAct;
 	private UnderlineActionListener underlineAct;
 	private UndoActionListener undoAct;
 	private RedoActionListener redoAct;
+	private ColorActionListener colorAct;
 	
 	private FileNameExtensionFilter plainTextFilter;
 	private FileNameExtensionFilter htmlFilter;
@@ -111,6 +116,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		underlineAct = new UnderlineActionListener();
 		undoAct = new UndoActionListener();
 		redoAct = new RedoActionListener();
+		colorAct = new ColorActionListener();
 	}
 	private KeyStroke getControlPlusKey(int keyEventVal)
 	{
@@ -128,9 +134,11 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		
 		undoButton = createButton("edit-undo.png", undoAct);
 		redoButton = createButton("edit-redo.png", redoAct);
+		colorButton = createButton("color-chooser.png", colorAct);
 		
 		topButtons.add(undoButton);
 		topButtons.add(redoButton);
+		topButtons.add(colorButton);
 		
 		add(topButtons, BorderLayout.PAGE_START);
 	}
@@ -249,6 +257,25 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		return text.isBold(index);
 	}
 	
+	public void setColor(int start, int length, Color aColor)
+	{
+		//Does not work properly
+		MutableAttributeSet attrib = text.getInputAttributes();
+		StyleConstants.ColorConstants.setForeground(attrib, aColor);
+		text.getStyledDocument().setCharacterAttributes(start, length, attrib, false);
+//		text.setCharacterAttributes(attrib, start, length);
+//		text.setSelectionStart(start);
+//		text.setSelectionEnd(start + length);
+//		text.setSelectionColor(aColor);
+//		text.setSelectionStart(0);
+//		text.setSelectionEnd(0);
+	}
+	
+	public boolean isColor(int index, Color aColor)
+	{
+		return true;
+	}
+	
 	public void update(Observable observed, Object changed)
 	{
 		if(textChangeFromEditor == false)
@@ -278,6 +305,9 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 					
 				case UNDERLINE:
 					setUnderline(tc.getStartIndex(), tc.getLength(), !isUnderline(tc.getStartIndex()));
+					break;
+				case COLOR:
+					setColor(tc.getStartIndex(), tc.getLength(), tc.getColor());
 					break;
 			}
 			
@@ -466,6 +496,24 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 				textChangeFromEditor = false;
 			}
 		}
+	}
+	
+	private class ColorActionListener extends AbstractAction implements ActionListener
+	{
+		Color selectedColorNew;
+		@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			int start = text.getSelectionStart();
+			MutableAttributeSet attrib = text.getInputAttributes();
+			Color prevColor = StyleConstants.ColorConstants.getForeground(attrib);
+			//Color prevColor = text.getSelectionColor();
+			Color selectedColor = JColorChooser.showDialog(null, "Choose a Color", null);
+			selectedColorNew = selectedColor;
+			controller.setColor(start, text.getSelectionLength(), selectedColor, prevColor);
+			text.requestFocus();
+		}
+
 	}
 }
 

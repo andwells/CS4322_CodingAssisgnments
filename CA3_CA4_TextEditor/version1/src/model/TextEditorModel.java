@@ -2,6 +2,7 @@ package model;
 
 import controller.TextEditorDocument;
 
+import java.awt.Color;
 import java.util.Observable;
 
 /**
@@ -96,7 +97,23 @@ public class TextEditorModel extends Observable implements TextEditorDocument
 	public boolean isRangeUnderline(int start, int length)
 	{
 		return styles.isRangeUnderline(start, length);
-	}	
+	}
+	
+	public void setColor(int start, int length, Color newColor)
+	{
+		styles.setColor(start, length, newColor);
+		updateObservers(new TextChange(TextChangeType.COLOR, start, length, newColor));
+	}
+	
+	public boolean isColor(int index, Color aColor)
+	{
+		return false;
+	}
+	
+	public boolean isRangeColor(int start, int length, Color aColor)
+	{
+		return false;
+	}
 	
 	public void appendText(String text, TextEditorStyle style)
 	{

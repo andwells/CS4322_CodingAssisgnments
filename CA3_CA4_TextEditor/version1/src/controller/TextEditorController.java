@@ -8,6 +8,7 @@ import model.LengthStyle;
 import model.StyleList;
 import model.StylePrinter;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -55,6 +56,14 @@ public class TextEditorController
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(false);
+	}
+	
+	public void setColor(int start, int length, Color newColor, Color prevColor)
+	{
+		ColorCommand c = new ColorCommand(model, start, length, newColor, prevColor);
+		invoker.doCommand(c);
+		view.setUndoEnabled(true);
+		view.setRedoEnabled(true);
 	}
 	
 	public void undo()

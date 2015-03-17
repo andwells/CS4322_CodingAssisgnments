@@ -1,0 +1,38 @@
+package controller.command;
+
+import model.TextEditorModel;
+
+public class ColorCommand implements TextCommand 
+{
+	public static final String action = "color";
+	TextEditorModel model;
+	int start, length;
+	Color color;
+	public ColorCommand(TextEditorModel m, int s, int l, Color aColor)
+	{
+	
+	}
+	
+	@Override
+	public void execute() 
+	{
+	
+		
+
+	}
+
+	@Override
+	public void undo() 
+	{
+	
+
+	}
+
+	@Override
+	public void redo() 
+	{
+	
+
+	}
+
+}

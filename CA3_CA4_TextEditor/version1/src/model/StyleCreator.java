@@ -1,5 +1,7 @@
 package model;
 
+import java.awt.Color;
+
 public abstract class StyleCreator
 {
 	public static TextEditorStyle getNormalStyle()
@@ -38,5 +40,19 @@ public abstract class StyleCreator
 		TextEditorStyle underlineStyle = new TextEditorStyle();
 		underlineStyle.setUnderline(underlineOn);
 		return underlineStyle;
+	}
+	
+	
+	//Default implementation returns a style with foreground set to black
+	public static TextEditorStyle getColorStyle()
+	{
+		return getColorStyle(Color.black);
+	}
+	
+	public static TextEditorStyle getColorStyle(Color aColor)
+	{
+		TextEditorStyle colorStyle = new TextEditorStyle();
+		colorStyle.setColor(aColor);
+		return colorStyle;
 	}
 }
