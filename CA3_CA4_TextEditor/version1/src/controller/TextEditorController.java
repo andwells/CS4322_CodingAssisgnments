@@ -77,10 +77,10 @@ public class TextEditorController
 	public void redo()
 	{
 		boolean empty;
-		empty = invoker.undoCommand();
-		view.setRedoEnabled(true);
+		empty = invoker.redoCommand();
+		view.setUndoEnabled(true);
 		if (empty == true)
-			view.setUndoEnabled(false);
+			view.setRedoEnabled(false);
 	}
 	
 	public void textInserted(int start, int length)
