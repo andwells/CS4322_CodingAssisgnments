@@ -1,0 +1,10 @@
+package controller.command;
+
+import java.util.Stack;
+
+
+public class Macro
+{
+	private String name; 
+	public Macro()
+}

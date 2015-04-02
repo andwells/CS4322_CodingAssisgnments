@@ -1,0 +1,9 @@
+package controller.command;
+
+import java.util.Stack;
+
+
+public class Macro
+{
+	TextCommand c;
+}

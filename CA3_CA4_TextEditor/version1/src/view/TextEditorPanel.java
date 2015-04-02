@@ -25,14 +25,17 @@ import java.util.Observer;
 import java.util.Observable;
 
 import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
+import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -61,6 +64,8 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private JButton undoButton;
 	private JButton redoButton;
 	private JButton colorButton;
+	private JToggleButton recordButton;
+	private JButton playButton;
 	
 	private BoldActionListener boldAct;
 	private ItalicActionListener italicAct;
@@ -68,6 +73,8 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private UndoActionListener undoAct;
 	private RedoActionListener redoAct;
 	private ColorActionListener colorAct;
+	private RecordActionListener recordAct;
+	private JFrame parent;
 	
 	private FileNameExtensionFilter plainTextFilter;
 	private FileNameExtensionFilter htmlFilter;
@@ -78,8 +85,9 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private boolean textChangeFromEditor;
 	private boolean updatingFromModel;
 	
-	public TextEditorPanel(TextEditorController controllerRef, TextEditorModel modelRef)
+	public TextEditorPanel(TextEditorController controllerRef, TextEditorModel modelRef, JFrame parentFrame)
 	{
+		parent = parentFrame;
 		System.out.println("iconPath=" + iconPath);
 
 		initializePanel();
@@ -117,6 +125,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		undoAct = new UndoActionListener();
 		redoAct = new RedoActionListener();
 		colorAct = new ColorActionListener();
+		recordAct = new RecordActionListener();
 	}
 	private KeyStroke getControlPlusKey(int keyEventVal)
 	{
@@ -135,10 +144,22 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		undoButton = createButton("edit-undo.png", undoAct);
 		redoButton = createButton("edit-redo.png", redoAct);
 		colorButton = createButton("color-chooser.png", colorAct);
+		playButton = createButton("play.png", null);
+		playButton.setEnabled(false);
+		
+		//Creates the record toggle
+		recordButton = new JToggleButton();
+		recordButton.setIcon(new ImageIcon(iconPath + "record.png"));
+		recordButton.addActionListener(recordAct);
+		recordButton.setText("");
+		
+		
 		
 		topButtons.add(undoButton);
 		topButtons.add(redoButton);
 		topButtons.add(colorButton);
+		topButtons.add(recordButton);
+		topButtons.add(playButton);
 		
 		add(topButtons, BorderLayout.PAGE_START);
 	}
@@ -171,6 +192,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_U), underlineAct);
 		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_Y), redoAct);
 		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_Z), undoAct);
+		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_R), colorAct);
 		
 		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_S), new StylePrintListener());
 		map.addActionForKeyStroke(getControlPlusKey(KeyEvent.VK_T), new TextPrintListener());
@@ -259,16 +281,9 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	public void setColor(int start, int length, Color aColor)
 	{
-		//Does not work properly
 		MutableAttributeSet attrib = text.getInputAttributes();
 		StyleConstants.ColorConstants.setForeground(attrib, aColor);
 		text.getStyledDocument().setCharacterAttributes(start, length, attrib, false);
-//		text.setCharacterAttributes(attrib, start, length);
-//		text.setSelectionStart(start);
-//		text.setSelectionEnd(start + length);
-//		text.setSelectionColor(aColor);
-//		text.setSelectionStart(0);
-//		text.setSelectionEnd(0);
 	}
 	
 	public boolean isColor(int index, Color aColor)
@@ -425,20 +440,52 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	private class BoldActionListener extends AbstractAction implements ActionListener
 	{
+		boolean boldOn = false;
 		public void actionPerformed(ActionEvent e)
 		{
 			int start = text.getSelectionStart();
-			controller.setBold(start, text.getSelectionLength(), !text.isBold(start));
+			int length = text.getSelectionLength();
+			
+			if(length == 0)
+			{
+				text.setBold(start, 0, !boldOn);
+			}
+			else
+			{
+				controller.setBold(start, text.getSelectionLength(), !text.isBold(start));
+			}
+			
+			boldOn = !boldOn;
+			
+			
+//			controller.setBold(start, text.getSelectionLength(), !text.isBold(start));
 			text.requestFocus();
 		}
 	}
 	
 	private class ItalicActionListener extends AbstractAction implements ActionListener
 	{
+		boolean itallicOn = false;
 		public void actionPerformed(ActionEvent e)
 		{
 			int start = text.getSelectionStart();
-			controller.setItalic(start, text.getSelectionLength(), !text.isItalic(start));
+			int length = text.getSelectionLength();
+			
+			if(length == 0 && itallicOn == true)
+			{
+				text.setItalic(start, length, !itallicOn);
+			}
+			else
+			{
+				controller.setItalic(start, text.getSelectionLength(), !text.isItalic(start));
+			}
+			
+			itallicOn = !itallicOn;
+			
+			
+			
+			//int start = text.getSelectionStart();
+//			controller.setItalic(start, text.getSelectionLength(), !text.isItalic(start));
 			text.requestFocus();
 		}
 	}
@@ -500,20 +547,52 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	private class ColorActionListener extends AbstractAction implements ActionListener
 	{
-		Color selectedColorNew;
 		@Override
 		public void actionPerformed(ActionEvent e) 
 		{
 			int start = text.getSelectionStart();
 			MutableAttributeSet attrib = text.getInputAttributes();
-			Color prevColor = StyleConstants.ColorConstants.getForeground(attrib);
-			//Color prevColor = text.getSelectionColor();
 			Color selectedColor = JColorChooser.showDialog(null, "Choose a Color", null);
-			selectedColorNew = selectedColor;
+			if(selectedColor == null)
+			{
+				return;
+			}
+			
+			//Gets the current foreground color
+			Color prevColor = StyleConstants.ColorConstants.getForeground(attrib);
+			
 			controller.setColor(start, text.getSelectionLength(), selectedColor, prevColor);
 			text.requestFocus();
 		}
 
+	}
+	
+	private class RecordActionListener extends AbstractAction implements ActionListener
+	{
+		
+		@Override
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			AbstractButton abstractButton = (AbstractButton) arg0.getSource();
+	        boolean selected = abstractButton.getModel().isSelected();
+	        if(selected)
+	        {
+	        	controller.startRecording();
+	        	parent.setTitle("Recording");
+	        	
+	        }
+	        else
+	        {
+	        	controller.stopRecording();
+	        	//save macro to list
+	        	playButton.setEnabled(true);
+	        	parent.setTitle("Text Editor");
+	        }
+	      
+	        
+			
+		}
+		
 	}
 }
 

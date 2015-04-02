@@ -9,6 +9,7 @@ import model.StyleList;
 import model.StylePrinter;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -16,6 +17,8 @@ import controller.command.*;
 
 public class TextEditorController
 {
+	private boolean isRecording = false;
+	private ArrayList<TextCommand> recordedCommands;
 	private TextEditorView view;
 	
 	private TextEditorModel model;
@@ -25,7 +28,8 @@ public class TextEditorController
 	public TextEditorController(TextEditorModel modelRef)
 	{
 		setView(null);
-		setModel(modelRef);	
+		setModel(modelRef);
+		
 	}
 	public void setView(TextEditorView viewRef)
 	{
@@ -36,6 +40,14 @@ public class TextEditorController
 		model = modelRef;
 	}
 	
+	public void addBold(int start, int length, boolean boldOn)
+	{
+			TextCommand c = new BoldCommand(model, start, length, boldOn);
+			invoker.add(c);
+			view.setUndoEnabled(true);
+			view.setRedoEnabled(false);
+	}
+	
 	public void setBold(int start, int length, boolean boldOn)
 	{
 		TextCommand c = new BoldCommand(model, start, length, boldOn);
@@ -43,6 +55,21 @@ public class TextEditorController
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(false);
 	}
+	
+	public void startRecording()
+	{
+		isRecording = true;
+		recordedCommands = new ArrayList<TextCommand>();
+	}
+	
+	public ArrayList<TextCommand> stopRecording()
+	{
+		isRecording = false;
+		ArrayList<TextCommand> temp = new ArrayList<TextCommand>(recordedCommands);
+		recordedCommands.clear();
+		return temp;
+	}
+	
 	public void setItalic(int start, int length, boolean italicOn)
 	{
 		TextCommand c = new ItalicCommand(model, start, length, italicOn);
@@ -89,11 +116,29 @@ public class TextEditorController
 		System.out.println("text inserted: " + insertedText + ", start=" + start + ", length=" + length );
 		StyleList insertedStyles = view.getStylesInRange(start, length);
 		
-		model.insertTextAt(start, insertedText, insertedStyles);
+		TextCommand c = new InsertTextCommand(model, start, insertedText, insertedStyles);
+		
+		invoker.doCommand(c);
+		view.setUndoEnabled(true);
+		view.setRedoEnabled(true);
+		
+		
+		//model.insertTextAt(start, insertedText, insertedStyles);
 	}
 	public void textRemoved(int start, int length)
 	{
-		model.removeTextAt(start, length);
+		
+		String textRemoved = model.getTextSubstring(start , length);
+				
+		StyleList removedStyles = view.getStylesInRange(start, length);
+		System.out.printf("start: %d \tlength: %d\tText: %s%n", start, length, textRemoved);
+		
+		TextCommand c = new RemoveTextCommand(model, start, textRemoved, removedStyles);
+		invoker.doCommand(c);
+		view.setUndoEnabled(true);
+		view.setRedoEnabled(true);
+		
+		//model.removeTextAt(start, length);
 	}
 	
 	private void updateUndoRedoButtons()

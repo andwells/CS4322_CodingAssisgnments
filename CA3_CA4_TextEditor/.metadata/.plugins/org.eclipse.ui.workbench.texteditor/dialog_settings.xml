@@ -13,16 +13,19 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="colorButton" key="selection"/>
+		<item value="RecordActionListener" key="selection"/>
 		<list key="findhistory">
+			<item value="RecordListener"/>
+			<item value="Redo"/>
+			<item value="Redi"/>
+			<item value="RedoLi"/>
+			<item value="redoAct"/>
+			<item value="redo"/>
 			<item value="colorButton"/>
 			<item value="ColorActionListener"/>
-			<item value="panel"/>
-			<item value="textArea"/>
-			<item value="controller"/>
-			<item value="invoker"/>
 		</list>
 		<list key="replacehistory">
+			<item value="RecordActionListener"/>
 		</list>
 	</section>
 </section>

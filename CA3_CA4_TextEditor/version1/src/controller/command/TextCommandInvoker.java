@@ -13,6 +13,14 @@ public class TextCommandInvoker implements Serializable {
         System.out.println(c);
     }
 
+    public void add(TextCommand c)
+    {
+    	if(c != null)
+    	{
+    		commands.push(c);
+    		redoCommands.clear();
+    	}
+    }
     public boolean undoCommand() {
     	TextCommand c = commands.pop();
     	if( c != null ) {  

@@ -1,5 +1,6 @@
 package view;
 
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -13,13 +14,14 @@ public class TextEditor
 	public static void main(String[] args)
 	{
 		JFrame frame = new JFrame("Text Editor");
-		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		addComponents(frame);
 
 		
 		frame.pack();
-		frame.setSize(450,450);
+		frame.setSize(700,600);
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
 	
@@ -28,11 +30,13 @@ public class TextEditor
 		TextEditorModel model = new TextEditorModel();
 		TextEditorController controller = new TextEditorController(model);
 		
-		TextEditorPanel panel = new TextEditorPanel(controller, model);
+		TextEditorPanel panel = new TextEditorPanel(controller, model, frame);
 		TextEditorMenu menu = new TextEditorMenu(controller);
+		
 		
 		frame.add(panel);
 		frame.setJMenuBar(menu);
 	}
+
 }
 

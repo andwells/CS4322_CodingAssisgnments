@@ -9,4 +9,10 @@
 <fullyQualifiedTypeName name="javax.swing.text.StyleConstants"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="javax.swing.text.StyleConstants.ColorConstants"/>
+<fullyQualifiedTypeName name="javax.swing.AbstractButton"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.StyleList"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="javax.swing.JFrame"/>
+<fullyQualifiedTypeName name="java.util.Stack"/>
 </qualifiedTypeNameHistroy>

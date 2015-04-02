@@ -1,0 +1,36 @@
+package controller.command;
+import model.StyleList;
+import model.TextEditorModel;
+
+public class InsertTextCommand implements TextCommand{
+    public static final String action = "bold";
+    TextEditorModel model;
+    int start, length;
+    StyleList styles;
+    public InsertTextCommand(TextEditorModel m, int s, String text, StyleList insertedStyles){
+        model = m;
+        start = s;
+        length = l;
+        styles = insertedStyles;
+    }
+    @Override
+    public void execute() {
+    	model.insertTextAt(start, insertedText, insertedStyles);
+    }
+
+    @Override
+    public void undo() {
+        model.setBold(start, length, !isBold);
+    }
+    
+    @Override
+    public void redo() {
+        execute();
+    }
+    
+    @Override
+    public String toString() {
+    	String msg = String.format("BoldCommand: start=%d, length=%d, isBold=%b", start, length, isBold);
+    	return msg;
+    }
+}

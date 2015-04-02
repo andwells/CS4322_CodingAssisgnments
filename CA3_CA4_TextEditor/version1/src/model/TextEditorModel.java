@@ -107,11 +107,13 @@ public class TextEditorModel extends Observable implements TextEditorDocument
 	
 	public boolean isColor(int index, Color aColor)
 	{
+		//not implemented
 		return false;
 	}
 	
 	public boolean isRangeColor(int start, int length, Color aColor)
 	{
+		//not implemented
 		return false;
 	}
 	
