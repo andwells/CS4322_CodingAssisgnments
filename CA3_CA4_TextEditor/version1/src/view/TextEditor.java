@@ -33,7 +33,6 @@ public class TextEditor
 		TextEditorPanel panel = new TextEditorPanel(controller, model, frame);
 		TextEditorMenu menu = new TextEditorMenu(controller);
 		
-		
 		frame.add(panel);
 		frame.setJMenuBar(menu);
 	}

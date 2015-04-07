@@ -1,9 +1,6 @@
 package controller.command;
 
 import java.awt.Color;
-
-import javax.jws.WebParam.Mode;
-
 import model.TextEditorModel;
 
 public class ColorCommand implements TextCommand 
@@ -19,6 +16,15 @@ public class ColorCommand implements TextCommand
 		length = l;
 		newColor = nc;
 		prevColor = pc;
+	}
+	
+	public ColorCommand(ColorCommand c)
+	{
+		this.model = c.model;
+		this.start = c.start;
+		this.length = c.length;
+		this.newColor = c.newColor;
+		this.prevColor = c.prevColor;
 	}
 	
 	@Override
@@ -45,4 +51,9 @@ public class ColorCommand implements TextCommand
     	return String.format("ColorCommand: start=%d, length=%d, newColor=%s, prevColor=%s", start, length, newColor.getRGB(), prevColor.getRGB());
     }
 
+	@Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
+    }
 }

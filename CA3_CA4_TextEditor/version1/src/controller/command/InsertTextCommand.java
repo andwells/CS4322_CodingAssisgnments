@@ -14,6 +14,15 @@ public class InsertTextCommand implements TextCommand{
         t=text;
         styles = insertedStyles;
     }
+    
+    public InsertTextCommand(InsertTextCommand c)
+    {
+    	this.model = c.model;
+    	this.start = c.start;
+    	this.t = c.t;
+    	this.styles = c.styles;
+    }
+    
     @Override
     public void execute() {
     	model.insertTextAt(start, t, styles);
@@ -33,5 +42,10 @@ public class InsertTextCommand implements TextCommand{
     public String toString() {
     	String msg = String.format("InsertTextCommand: start=%d, Text=%s", start, t);
     	return msg;
+    }
+    @Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
     }
 }

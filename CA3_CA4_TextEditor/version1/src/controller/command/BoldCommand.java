@@ -12,6 +12,15 @@ public class BoldCommand implements TextCommand{
         length = l;
         this.isBold = isBoldb;
     }
+    
+    public BoldCommand(BoldCommand c)
+    {
+    	this.model = c.model;
+    	this.start = c.start;
+    	this.length = c.length;
+    	this.isBold = c.isBold;
+    }
+    
     @Override
     public void execute() {
         model.setBold(start, length, isBold);
@@ -32,4 +41,11 @@ public class BoldCommand implements TextCommand{
     	String msg = String.format("BoldCommand: start=%d, length=%d, isBold=%b", start, length, isBold);
     	return msg;
     }
+    
+    @Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
+    }
+    
 }

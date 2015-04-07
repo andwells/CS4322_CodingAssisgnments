@@ -12,6 +12,15 @@ public class ItalicCommand implements TextCommand{
         length = l;
         this.isItalic = isItalicb;
     }
+    
+    public ItalicCommand(ItalicCommand c)
+    {
+    	this.model = c.model;
+    	this.start = c.start;
+    	this.length = c.length;
+    	this.isItalic = c.isItalic;
+    }
+    
     @Override
     public void execute() {
         model.setItalic(start, length, isItalic);
@@ -31,5 +40,11 @@ public class ItalicCommand implements TextCommand{
     public String toString() {
     	String msg = String.format("ItalicCommand: start=%d, length=%d, isItalic=%b", start, length, isItalic);
     	return msg;
+    }
+    
+    @Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
     }
 }

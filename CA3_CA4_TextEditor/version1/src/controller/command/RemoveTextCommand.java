@@ -15,6 +15,15 @@ public class RemoveTextCommand implements TextCommand{
         oldText=text;
         oldStyles = removedStyles;
     }
+    
+    public RemoveTextCommand(RemoveTextCommand c)
+    {
+    	this.model = c.model;
+    	this.start = c.start;
+    	this.oldText = c.oldText;
+    	this.oldStyles = c.oldStyles;
+    }
+    
     @Override
     public void execute() {
     	model.removeTextAt(start, oldText.length());
@@ -35,5 +44,11 @@ public class RemoveTextCommand implements TextCommand{
     public String toString() {
     	String msg = String.format("RemoveTextCommand: start=%d, Text=%s", start, oldText);
     	return msg;
+    }
+    
+    @Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
     }
 }

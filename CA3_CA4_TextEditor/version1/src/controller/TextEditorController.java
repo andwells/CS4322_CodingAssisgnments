@@ -18,7 +18,7 @@ import controller.command.*;
 public class TextEditorController
 {
 	private boolean isRecording = false;
-	private ArrayList<TextCommand> recordedCommands;
+	private Macro recordedCommands;
 	private TextEditorView view;
 	
 	private TextEditorModel model;
@@ -40,17 +40,13 @@ public class TextEditorController
 		model = modelRef;
 	}
 	
-	public void addBold(int start, int length, boolean boldOn)
-	{
-			TextCommand c = new BoldCommand(model, start, length, boldOn);
-			invoker.add(c);
-			view.setUndoEnabled(true);
-			view.setRedoEnabled(false);
-	}
-	
 	public void setBold(int start, int length, boolean boldOn)
 	{
-		TextCommand c = new BoldCommand(model, start, length, boldOn);
+		BoldCommand c = new BoldCommand(model, start, length, boldOn);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new BoldCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(false);
@@ -59,27 +55,35 @@ public class TextEditorController
 	public void startRecording()
 	{
 		isRecording = true;
-		recordedCommands = new ArrayList<TextCommand>();
+		recordedCommands = new Macro(invoker);
 	}
 	
-	public ArrayList<TextCommand> stopRecording()
+	public Macro stopRecording()
 	{
 		isRecording = false;
-		ArrayList<TextCommand> temp = new ArrayList<TextCommand>(recordedCommands);
-		recordedCommands.clear();
-		return temp;
+		//Macro temp = Macro(recordedCommands);
+		//recordedCommands.clear();
+		return recordedCommands;
 	}
 	
 	public void setItalic(int start, int length, boolean italicOn)
 	{
-		TextCommand c = new ItalicCommand(model, start, length, italicOn);
+		ItalicCommand c = new ItalicCommand(model, start, length, italicOn);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new ItalicCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(false);
 	}
 	public void setUnderline(int start, int length, boolean underlineOn)
 	{
-		TextCommand c = new UnderlineCommand(model, start, length, underlineOn);
+		UnderlineCommand c = new UnderlineCommand(model, start, length, underlineOn);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new UnderlineCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(false);
@@ -88,6 +92,10 @@ public class TextEditorController
 	public void setColor(int start, int length, Color newColor, Color prevColor)
 	{
 		ColorCommand c = new ColorCommand(model, start, length, newColor, prevColor);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new ColorCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(true);
@@ -116,8 +124,11 @@ public class TextEditorController
 		System.out.println("text inserted: " + insertedText + ", start=" + start + ", length=" + length );
 		StyleList insertedStyles = view.getStylesInRange(start, length);
 		
-		TextCommand c = new InsertTextCommand(model, start, insertedText, insertedStyles);
-		
+		InsertTextCommand c = new InsertTextCommand(model, start, insertedText, insertedStyles);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new InsertTextCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(true);
@@ -133,7 +144,11 @@ public class TextEditorController
 		StyleList removedStyles = view.getStylesInRange(start, length);
 		System.out.printf("start: %d \tlength: %d\tText: %s%n", start, length, textRemoved);
 		
-		TextCommand c = new RemoveTextCommand(model, start, textRemoved, removedStyles);
+		RemoveTextCommand c = new RemoveTextCommand(model, start, textRemoved, removedStyles);
+		if(isRecording)
+		{
+			recordedCommands.addStep(new RemoveTextCommand(c));
+		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(true);

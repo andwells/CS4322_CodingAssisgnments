@@ -50,13 +50,13 @@ public class StyleList extends LinkedList<LengthStyle>
 	//Not implemented
 	public boolean isColor(int index, Color aColor)
 	{
-		return false;
+		return doesIndexContainStyle(index, StyleCreator.getColorStyle(aColor));
 	}
 	
 	//Not implemented
 	public boolean isRangeColor(int start, int length, Color aColor)
 	{
-		return false;
+		return doesRangeContainStyle(start, length, StyleCreator.getColorStyle(aColor));
 	}
 	
 	public void setBold(int start, int length, boolean boldOn)

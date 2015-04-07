@@ -2,6 +2,7 @@ package view;
 
 import controller.TextEditorController;
 import controller.TextEditorView;
+import controller.command.Macro;
 
 import model.StyleList;
 import model.TextEditorModel;
@@ -10,7 +11,9 @@ import model.TextChangeType;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Point;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -18,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 
@@ -30,12 +34,17 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
+import javax.swing.JComboBox;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -46,6 +55,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Keymap;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.StyleConstants;
+
 
 
 public class TextEditorPanel extends JPanel implements TextEditorView, Observer
@@ -66,6 +76,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private JButton colorButton;
 	private JToggleButton recordButton;
 	private JButton playButton;
+	private JComboBox playCombo;
 	
 	private BoldActionListener boldAct;
 	private ItalicActionListener italicAct;
@@ -74,7 +85,14 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private RedoActionListener redoAct;
 	private ColorActionListener colorAct;
 	private RecordActionListener recordAct;
+	private PlayActionListener playAct;
+	
 	private JFrame parent;
+	private Macro currentMacro;
+	private LinkedList<Macro> macros;
+	private JButton chooseMacro;
+	private JPopupMenu macroList;
+	
 	
 	private FileNameExtensionFilter plainTextFilter;
 	private FileNameExtensionFilter htmlFilter;
@@ -89,6 +107,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	{
 		parent = parentFrame;
 		System.out.println("iconPath=" + iconPath);
+		macros = new LinkedList<Macro>();
 
 		initializePanel();
 		initializeActions();
@@ -126,6 +145,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		redoAct = new RedoActionListener();
 		colorAct = new ColorActionListener();
 		recordAct = new RecordActionListener();
+		playAct = new PlayActionListener(); 
 	}
 	private KeyStroke getControlPlusKey(int keyEventVal)
 	{
@@ -144,22 +164,38 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		undoButton = createButton("edit-undo.png", undoAct);
 		redoButton = createButton("edit-redo.png", redoAct);
 		colorButton = createButton("color-chooser.png", colorAct);
-		playButton = createButton("play.png", null);
+		playButton = createButton("play.png", playAct);
 		playButton.setEnabled(false);
+
+//		chooseMacro = new JButton("Down Arrow");
+		macroList = new JPopupMenu();
+		
+		//Create ActionListener on the fly
+		ActionListener a1 = new ActionListener(){
+			public void actionPerformed(ActionEvent ae)
+			{
+				Component c = (Component)ae.getSource();
+				Point p = c.getLocationOnScreen();
+				macroList.show(chooseMacro, 0, 0);
+				macroList.setLocation(p.x, p.y + c.getHeight());
+			}
+		};
+		chooseMacro = createButton("down copy.png", a1);
+		
+		
 		
 		//Creates the record toggle
 		recordButton = new JToggleButton();
 		recordButton.setIcon(new ImageIcon(iconPath + "record.png"));
 		recordButton.addActionListener(recordAct);
 		recordButton.setText("");
-		
-		
-		
+				
 		topButtons.add(undoButton);
 		topButtons.add(redoButton);
 		topButtons.add(colorButton);
 		topButtons.add(recordButton);
 		topButtons.add(playButton);
+		topButtons.add(chooseMacro);
 		
 		add(topButtons, BorderLayout.PAGE_START);
 	}
@@ -180,6 +216,8 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		
 		JScrollPane textScroller = new JScrollPane(text);
 		textScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		textScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		
 		add(textScroller, BorderLayout.CENTER);
 	}
@@ -446,7 +484,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			int start = text.getSelectionStart();
 			int length = text.getSelectionLength();
 			
-			if(length == 0)
+			if(length == 0 && boldOn == true)
 			{
 				text.setBold(start, 0, !boldOn);
 			}
@@ -481,21 +519,29 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			}
 			
 			itallicOn = !itallicOn;
-			
-			
-			
-			//int start = text.getSelectionStart();
-//			controller.setItalic(start, text.getSelectionLength(), !text.isItalic(start));
+
 			text.requestFocus();
 		}
 	}
 	
 	private class UnderlineActionListener extends AbstractAction implements ActionListener
 	{
+		public boolean underlineOn = false;
 		public void actionPerformed(ActionEvent e)
 		{
 			int start = text.getSelectionStart();
-			controller.setUnderline(start, text.getSelectionLength(), !text.isUnderline(start));
+			int length = text.getSelectionLength();
+			if(length == 0 && underlineOn == true)
+			{
+				text.setUnderline(start, length, !underlineOn);
+			}
+			else
+			{
+				controller.setUnderline(start, text.getSelectionLength(), !text.isUnderline(start));
+			}
+
+			underlineOn = ! underlineOn;
+			
 			text.requestFocus();
 		}
 	}
@@ -553,6 +599,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			int start = text.getSelectionStart();
 			MutableAttributeSet attrib = text.getInputAttributes();
 			Color selectedColor = JColorChooser.showDialog(null, "Choose a Color", null);
+			
 			if(selectedColor == null)
 			{
 				return;
@@ -569,7 +616,6 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	private class RecordActionListener extends AbstractAction implements ActionListener
 	{
-		
 		@Override
 		public void actionPerformed(ActionEvent arg0) 
 		{
@@ -579,20 +625,67 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	        {
 	        	controller.startRecording();
 	        	parent.setTitle("Recording");
-	        	
 	        }
 	        else
 	        {
-	        	controller.stopRecording();
-	        	//save macro to list
+	        	Macro temp = controller.stopRecording();
+	        	String macName = JOptionPane.showInputDialog("Name Your Macro");
+	     
+	        	if(macName.equals(""))
+	        	{
+	        		macName = "<untitled>";
+	        	}
+	        	
+	        	temp.setName(macName);
+	        	
+	        	macros.addFirst(temp);
+	        	currentMacro = temp;
+	        		        	
+	        	//Makes the menu items for the list of Macros
+	        	dataBind(macros);
+	        	
 	        	playButton.setEnabled(true);
 	        	parent.setTitle("Text Editor");
+	        	
 	        }
-	      
-	        
-			
+        	text.requestFocus();
 		}
 		
 	}
-}
+	
+	private class PlayActionListener extends AbstractAction implements ActionListener
+	{
 
+		@Override
+		public void actionPerformed(ActionEvent arg0) 
+		{
+			currentMacro.play(text.getCaret());
+			text.requestFocus();
+		}
+		
+	}
+	
+	private void dataBind(LinkedList<Macro> toBind)
+	{
+		//Clear existing menu items
+		macroList.removeAll();
+		
+		//Add a menu item to access each recorded macro
+		for(Macro m : toBind)
+		{
+			JMenuItem temp = new JMenuItem(m.getName());
+			
+			//Create ActionListener on the fly
+			temp.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent arg0)
+				{
+					Component c = (Component)arg0.getSource();
+					currentMacro = macros.get(macroList.getComponentIndex(c));
+				}
+			});
+			
+			macroList.add(temp);
+		}	
+	}
+}

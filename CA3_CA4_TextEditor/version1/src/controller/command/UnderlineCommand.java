@@ -12,6 +12,15 @@ public class UnderlineCommand implements TextCommand{
         length = l;
         this.isUnderline = isUnderlineb;
     }
+    
+    public UnderlineCommand(UnderlineCommand c)
+    {
+    	this.model = c.model;
+    	this.start = c.start;
+    	this.length = c.length;
+    	this.isUnderline = c.isUnderline;
+    }
+    
     @Override
     public void execute() {
         model.setUnderline(start, length, isUnderline);
@@ -31,5 +40,11 @@ public class UnderlineCommand implements TextCommand{
     public String toString() {
     	String msg = String.format("UnderlineCommand: start=%d, length=%d, isUnderline=%b", start, length, isUnderline);
     	return msg;
+    }
+    
+    @Override
+    public void updateStart(int start)
+    {
+    	this.start = start;
     }
 }

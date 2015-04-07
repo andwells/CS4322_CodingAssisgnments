@@ -6,11 +6,13 @@ import java.util.Stack;
 public class TextCommandInvoker implements Serializable {
 	Stack<TextCommand> commands = new Stack<>();
 	Stack<TextCommand> redoCommands = new Stack<>();
+	
     public void doCommand(TextCommand c) {
         commands.push(c);
         redoCommands.clear();
         c.execute();
         System.out.println(c);
+        printStack();
     }
 
     public void add(TextCommand c)
@@ -27,7 +29,9 @@ public class TextCommandInvoker implements Serializable {
     		c.undo();
     		redoCommands.push(c);
             System.out.println("Undo:" + c);
+            printStack();
     	}
+    	
     	return commands.isEmpty();
     }
     //returns true if has more redos; false otherwise
@@ -37,7 +41,19 @@ public class TextCommandInvoker implements Serializable {
     		c.redo();
     		commands.push(c);
     		System.out.println("Redo:" + c);
+    		printStack();
     	}
     	return redoCommands.isEmpty();
+    }
+    
+    private void printStack()
+    {
+    	System.out.println("DEBUG::PRINTING COMMAND STACK::DEBUG");
+    	
+    	for(int i = commands.size() - 1; i >= 0; i--)
+    	{
+    		System.out.println(commands.get(i));
+    	}
+    	
     }
 }
