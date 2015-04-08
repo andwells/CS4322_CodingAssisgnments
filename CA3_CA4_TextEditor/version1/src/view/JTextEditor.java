@@ -14,6 +14,7 @@ import javax.swing.text.BadLocationException;
 public class JTextEditor extends JTextPane
 {
 	private StyledDocument doc;
+	private boolean isOvertype = false;
 	
 	public JTextEditor()
 	{
@@ -29,6 +30,33 @@ public class JTextEditor extends JTextPane
 		);
 		
 		doc = getStyledDocument();
+	}
+	
+	public boolean isOvertype()
+	{
+		return this.isOvertype;
+	}
+	
+	public void setOvertype(boolean o)
+	{
+		this.isOvertype = o;
+	}
+	
+	//Taken from https://community.oracle.com/thread/1877395
+	@Override
+	public void replaceSelection(String text)
+	{
+		if(isOvertype)//Check to see if Overtype is enabled
+		{
+			int pos = getCaretPosition();
+			
+			if(getSelectedText() == null && pos < this.getDocument().getLength())
+			{
+				//If no text is selected and the caret is not at the end of the available text
+				this.moveCaretPosition(pos + 1);
+			}
+		}
+		super.replaceSelection(text);
 	}
 	
 	// ----------------------------------------------------------------------------
@@ -85,6 +113,8 @@ public class JTextEditor extends JTextPane
 			System.out.println(e);
 		}
 	}
+	
+	
 	
 	// ----------------------------------------------------------------------------
 	// General Purpose Selection Methods

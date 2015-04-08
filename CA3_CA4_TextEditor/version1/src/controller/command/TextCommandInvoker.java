@@ -12,7 +12,7 @@ public class TextCommandInvoker implements Serializable {
         redoCommands.clear();
         c.execute();
         System.out.println(c);
-        printStack();
+        //printStack();
     }
 
     public void add(TextCommand c)
@@ -29,7 +29,7 @@ public class TextCommandInvoker implements Serializable {
     		c.undo();
     		redoCommands.push(c);
             System.out.println("Undo:" + c);
-            printStack();
+            //printStack();
     	}
     	
     	return commands.isEmpty();
@@ -41,7 +41,7 @@ public class TextCommandInvoker implements Serializable {
     		c.redo();
     		commands.push(c);
     		System.out.println("Redo:" + c);
-    		printStack();
+    		//printStack();
     	}
     	return redoCommands.isEmpty();
     }

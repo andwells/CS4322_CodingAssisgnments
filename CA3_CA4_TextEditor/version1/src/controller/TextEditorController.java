@@ -2,7 +2,6 @@ package controller;
 
 import view.TextEditorPanel;
 
-
 import model.TextEditorModel;
 import model.LengthStyle;
 import model.StyleList;
@@ -18,6 +17,7 @@ import controller.command.*;
 public class TextEditorController
 {
 	private boolean isRecording = false;
+	private boolean isOvertype = false;
 	private Macro recordedCommands;
 	private TextEditorView view;
 	
@@ -29,7 +29,6 @@ public class TextEditorController
 	{
 		setView(null);
 		setModel(modelRef);
-		
 	}
 	public void setView(TextEditorView viewRef)
 	{
@@ -56,6 +55,11 @@ public class TextEditorController
 	{
 		isRecording = true;
 		recordedCommands = new Macro(invoker);
+	}
+	
+	public void overtype()
+	{
+		isOvertype = !isOvertype;
 	}
 	
 	public Macro stopRecording()
@@ -130,11 +134,10 @@ public class TextEditorController
 			recordedCommands.addStep(new InsertTextCommand(c));
 		}
 		invoker.doCommand(c);
+		
+		
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(true);
-		
-		
-		//model.insertTextAt(start, insertedText, insertedStyles);
 	}
 	public void textRemoved(int start, int length)
 	{
@@ -152,8 +155,6 @@ public class TextEditorController
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
 		view.setRedoEnabled(true);
-		
-		//model.removeTextAt(start, length);
 	}
 	
 	private void updateUndoRedoButtons()

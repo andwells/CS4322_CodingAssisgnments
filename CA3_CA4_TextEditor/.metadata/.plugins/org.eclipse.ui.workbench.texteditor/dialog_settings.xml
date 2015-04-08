@@ -13,18 +13,19 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="addStep" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
+			<item value="replace"/>
+			<item value="printStack"/>
+			<item value="DEBUG"/>
+			<item value="print"/>
+			<item value="state"/>
+			<item value="illegal"/>
 			<item value="addStep"/>
 			<item value="Deque"/>
-			<item value="down"/>
-			<item value="menu"/>
-			<item value="save"/>
-			<item value="itallic"/>
-			<item value="undo"/>
-			<item value="2"/>
 		</list>
 		<list key="replacehistory">
+			<item value="//printStack"/>
 			<item value="LinkedList"/>
 			<item value="RecordActionListener"/>
 		</list>

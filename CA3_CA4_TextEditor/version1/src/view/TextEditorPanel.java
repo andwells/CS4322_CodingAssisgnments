@@ -76,7 +76,8 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private JButton colorButton;
 	private JToggleButton recordButton;
 	private JButton playButton;
-	private JComboBox playCombo;
+	private JToggleButton overtypeButton;
+	private JButton delButton;
 	
 	private BoldActionListener boldAct;
 	private ItalicActionListener italicAct;
@@ -86,14 +87,15 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	private ColorActionListener colorAct;
 	private RecordActionListener recordAct;
 	private PlayActionListener playAct;
-	
+	private OvertypeActionListener overAct;
+	private DeleteCommandActionListener delAct;
+		
 	private JFrame parent;
 	private Macro currentMacro;
 	private LinkedList<Macro> macros;
 	private JButton chooseMacro;
 	private JPopupMenu macroList;
-	
-	
+		
 	private FileNameExtensionFilter plainTextFilter;
 	private FileNameExtensionFilter htmlFilter;
 	private FileNameExtensionFilter googleTalkFilter;
@@ -145,7 +147,9 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		redoAct = new RedoActionListener();
 		colorAct = new ColorActionListener();
 		recordAct = new RecordActionListener();
-		playAct = new PlayActionListener(); 
+		playAct = new PlayActionListener();
+		overAct = new OvertypeActionListener();
+		delAct = new DeleteCommandActionListener();
 	}
 	private KeyStroke getControlPlusKey(int keyEventVal)
 	{
@@ -165,9 +169,12 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		redoButton = createButton("edit-redo.png", redoAct);
 		colorButton = createButton("color-chooser.png", colorAct);
 		playButton = createButton("play.png", playAct);
+		delButton = createButton("delete.png", delAct);
+		
+		//Disable Play button until we record a macro
 		playButton.setEnabled(false);
-
-//		chooseMacro = new JButton("Down Arrow");
+		
+		/*Intialize the pop-up menu*/
 		macroList = new JPopupMenu();
 		
 		//Create ActionListener on the fly
@@ -181,18 +188,24 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			}
 		};
 		chooseMacro = createButton("down copy.png", a1);
-		
-		
-		
+				
 		//Creates the record toggle
 		recordButton = new JToggleButton();
 		recordButton.setIcon(new ImageIcon(iconPath + "record.png"));
 		recordButton.addActionListener(recordAct);
 		recordButton.setText("");
-				
+		
+		//Creates the record toggle
+		overtypeButton = new JToggleButton();
+		overtypeButton.setIcon(new ImageIcon(iconPath + "overtype.png"));
+		overtypeButton.addActionListener(overAct);
+		overtypeButton.setText("");
+						
 		topButtons.add(undoButton);
 		topButtons.add(redoButton);
 		topButtons.add(colorButton);
+		topButtons.add(overtypeButton);
+		topButtons.add(delButton);
 		topButtons.add(recordButton);
 		topButtons.add(playButton);
 		topButtons.add(chooseMacro);
@@ -217,8 +230,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		JScrollPane textScroller = new JScrollPane(text);
 		textScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		textScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		
+				
 		add(textScroller, BorderLayout.CENTER);
 	}
 	
@@ -326,6 +338,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	public boolean isColor(int index, Color aColor)
 	{
+		//Not implemented
 		return true;
 	}
 	
@@ -494,9 +507,7 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			}
 			
 			boldOn = !boldOn;
-			
-			
-//			controller.setBold(start, text.getSelectionLength(), !text.isBold(start));
+
 			text.requestFocus();
 		}
 	}
@@ -655,14 +666,51 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	
 	private class PlayActionListener extends AbstractAction implements ActionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent arg0) 
 		{
 			currentMacro.play(text.getCaret());
 			text.requestFocus();
 		}
-		
+	}
+	
+	private class OvertypeActionListener extends AbstractAction implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			//Toggle overtype
+			text.setOvertype(!text.isOvertype());
+			text.requestFocus();
+		}
+	}
+	
+	private class DeleteCommandActionListener extends AbstractAction implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0)
+		{
+			int pos = text.getCaretPosition();
+			
+			//If the caret is not at the end of the document
+			if(pos < text.getDocument().getLength())
+			{
+				String select = text.getSelectedText();
+				int toRemove = 1;
+				
+				if(select != null)//Check to see if there is any selected text
+				{
+					//If there is any selected text, get the length of it
+					toRemove = select.length();
+					pos = text.getSelectionStart();
+				}
+				
+				//Perform the deletion
+				text.removeTextAt(pos, toRemove);
+			}
+			
+			text.requestFocus();
+		}
 	}
 	
 	private void dataBind(LinkedList<Macro> toBind)
