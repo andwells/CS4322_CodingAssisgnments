@@ -18,7 +18,6 @@ public class TextEditorStyle extends SimpleAttributeSet
 		setBold(StyleConstants.isBold(toCopy));
 		setItalic(StyleConstants.isItalic(toCopy));
 		setUnderline(StyleConstants.isUnderline(toCopy));
-		setColor(StyleConstants.getForeground(toCopy));
 	}
 	
 	public boolean isBold()

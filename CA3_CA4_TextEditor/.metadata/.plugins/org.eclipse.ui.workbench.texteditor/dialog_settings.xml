@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="macros" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
-			<item value="macros"/>
-			<item value="playButton"/>
-			<item value="chooseMacro"/>
 			<item value="replace"/>
 			<item value="printStack"/>
 			<item value="DEBUG"/>
 			<item value="print"/>
 			<item value="state"/>
+			<item value="illegal"/>
+			<item value="addStep"/>
+			<item value="Deque"/>
 		</list>
 		<list key="replacehistory">
 			<item value="//printStack"/>

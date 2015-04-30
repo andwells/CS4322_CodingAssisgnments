@@ -188,7 +188,6 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 			}
 		};
 		chooseMacro = createButton("down copy.png", a1);
-		chooseMacro.setEnabled(false);
 				
 		//Creates the record toggle
 		recordButton = new JToggleButton();
@@ -657,7 +656,6 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 	        	dataBind(macros);
 	        	
 	        	playButton.setEnabled(true);
-	        	chooseMacro.setEnabled(true);
 	        	parent.setTitle("Text Editor");
 	        	
 	        }
