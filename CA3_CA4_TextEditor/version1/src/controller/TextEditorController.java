@@ -112,6 +112,10 @@ public class TextEditorController
 		view.setRedoEnabled(true);
 		if (empty == true)
 			view.setUndoEnabled(false);
+		if(isRecording)
+		{
+			recordedCommands.undoStep();
+		}
 	}
 	public void redo()
 	{
@@ -120,13 +124,17 @@ public class TextEditorController
 		view.setUndoEnabled(true);
 		if (empty == true)
 			view.setRedoEnabled(false);
+		if(isRecording)
+		{
+			recordedCommands.redoStep();
+		}
 	}
 	
 	public void textInserted(int start, int length)
 	{
 		String insertedText = view.getText().substring(start, start + length);
 		System.out.println("text inserted: " + insertedText + ", start=" + start + ", length=" + length );
-		StyleList insertedStyles = view.getStylesInRange(start, length);
+		StyleList insertedStyles = view.fgetStylesInRange(start, length);
 		
 		InsertTextCommand c = new InsertTextCommand(model, start, insertedText, insertedStyles);
 		if(isRecording)

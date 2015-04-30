@@ -8,6 +8,7 @@ public class Macro
 {
 	private String name;
 	private Stack<TextCommand> commands;
+	private Stack<TextCommand> redoCommands;
 	private TextCommandInvoker invoker;
 		
 	
@@ -45,12 +46,20 @@ public class Macro
 		if(c != null)
 		{
 			commands.push(c);
+			redoCommands.clear();
 		}
 	}
 	
-	public TextCommand removeLast()
+	public void undoStep()
 	{
-		return commands.pop();
+		if(commands.peek()!=null)
+			redoCommands.push(commands.pop());
+	}
+	
+	public void redoStep()
+	{
+		if(redoCommands.peek()!=null)
+			commands.push(redoCommands.pop());
 	}
 	
 	public void play(Caret car)
