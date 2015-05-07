@@ -56,4 +56,22 @@ public class TextCommandInvoker implements Serializable {
     	}
     	
     }
+    
+    public boolean canUndo()
+    {
+    	if(commands.size() > 0)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public boolean canRedo()
+    {
+    	if(redoCommands.size() > 0)
+    	{
+    		return true;
+    	}
+    	return false;
+    }
 }

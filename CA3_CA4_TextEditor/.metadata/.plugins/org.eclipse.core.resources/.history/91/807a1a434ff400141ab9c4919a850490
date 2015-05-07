@@ -1,0 +1,9 @@
+package controller.command;
+
+public class TextCommandCopier
+{
+	public static TextCommand copy(TextCommand c)
+	{
+		
+	}
+}

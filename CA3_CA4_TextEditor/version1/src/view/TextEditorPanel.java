@@ -60,11 +60,7 @@ import javax.swing.text.StyleConstants;
 
 public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 {
-//	private static String iconPath = "bin/view/icons/";
-//	private static String iconPath = "E:\\Data-Classes\\CS 4322 - Software Engineering 2\\Assignments\\Spring 13\\04\\StudentTextEditorEclipse\\StudentTextEditor\\bin\\view\\icons\\";
-//	private static String iconPath = TextEditorPanel.class.getResource("icons/").getPath();
-//	private static String iconPath = "\\StudentTextEditor\\bin\\view\\icons\\";
-	private static String iconPath = "C:\\Users\\Lee\\Dropbox\\Jameson Wells\\CA3_CA4_TextEditor\\version1\\bin\\view\\icons\\";
+	private static String iconPath = TextEditorPanel.class.getResource("icons/").getPath();
 	
 	private JTextEditor text;
 	
@@ -672,6 +668,8 @@ public class TextEditorPanel extends JPanel implements TextEditorView, Observer
 		public void actionPerformed(ActionEvent arg0) 
 		{
 			currentMacro.play(text.getCaret());
+			setUndoEnabled(controller.canControllerUndo());
+			setRedoEnabled(controller.canControllerRedo());
 			text.requestFocus();
 		}
 	}

@@ -13,15 +13,15 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="addStep" key="selection"/>
 		<list key="findhistory">
+			<item value="addStep"/>
 			<item value="replace"/>
 			<item value="printStack"/>
 			<item value="DEBUG"/>
 			<item value="print"/>
 			<item value="state"/>
 			<item value="illegal"/>
-			<item value="addStep"/>
 			<item value="Deque"/>
 		</list>
 		<list key="replacehistory">

@@ -22,7 +22,6 @@ public class TextEditorController
 	private TextEditorView view;
 	
 	private TextEditorModel model;
-	
 	private TextCommandInvoker invoker = new TextCommandInvoker();
 	
 	public TextEditorController(TextEditorModel modelRef)
@@ -44,7 +43,8 @@ public class TextEditorController
 		BoldCommand c = new BoldCommand(model, start, length, boldOn);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new BoldCommand(c));
+//			recordedCommands.addStep(new BoldCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
@@ -65,8 +65,6 @@ public class TextEditorController
 	public Macro stopRecording()
 	{
 		isRecording = false;
-		//Macro temp = Macro(recordedCommands);
-		//recordedCommands.clear();
 		return recordedCommands;
 	}
 	
@@ -75,7 +73,8 @@ public class TextEditorController
 		ItalicCommand c = new ItalicCommand(model, start, length, italicOn);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new ItalicCommand(c));
+//			recordedCommands.addStep(new ItalicCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
@@ -86,7 +85,8 @@ public class TextEditorController
 		UnderlineCommand c = new UnderlineCommand(model, start, length, underlineOn);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new UnderlineCommand(c));
+//			recordedCommands.addStep(new UnderlineCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
@@ -98,7 +98,8 @@ public class TextEditorController
 		ColorCommand c = new ColorCommand(model, start, length, newColor, prevColor);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new ColorCommand(c));
+//			recordedCommands.addStep(new ColorCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
@@ -134,12 +135,13 @@ public class TextEditorController
 	{
 		String insertedText = view.getText().substring(start, start + length);
 		System.out.println("text inserted: " + insertedText + ", start=" + start + ", length=" + length );
-		StyleList insertedStyles = view.fgetStylesInRange(start, length);
+		StyleList insertedStyles = view.getStylesInRange(start, length);
 		
 		InsertTextCommand c = new InsertTextCommand(model, start, insertedText, insertedStyles);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new InsertTextCommand(c));
+//			recordedCommands.addStep(new InsertTextCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		
@@ -158,7 +160,8 @@ public class TextEditorController
 		RemoveTextCommand c = new RemoveTextCommand(model, start, textRemoved, removedStyles);
 		if(isRecording)
 		{
-			recordedCommands.addStep(new RemoveTextCommand(c));
+//			recordedCommands.addStep(new RemoveTextCommand(c));
+			recordedCommands.addStep(TextCommandCopier.copy(c));
 		}
 		invoker.doCommand(c);
 		view.setUndoEnabled(true);
@@ -231,5 +234,16 @@ public class TextEditorController
 		System.out.println("Model Styles:");
 		StylePrinter.printStyles(model.getStyles());	
 		System.out.println();
+	}
+	
+	
+	public boolean canControllerUndo()
+	{
+		return invoker.canUndo();
+	}
+	
+	public boolean canControllerRedo()
+	{
+		return invoker.canRedo();
 	}
 }

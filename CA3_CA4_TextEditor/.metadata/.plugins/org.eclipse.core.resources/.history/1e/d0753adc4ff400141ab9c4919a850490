@@ -1,0 +1,28 @@
+package controller.command;
+
+public class TextCommandCopier
+{
+	public static TextCommand copy(TextCommand c)
+	{
+		switch(c.getClass().getSimpleName())
+		{
+			case "BoldCommand":
+				BoldCommand b = new BoldCommand((BoldCommand) c);
+				return b;
+			case "ColorCommand":
+				ColorCommand cr = new ColorCommand((ColorCommand) c);
+				return cr;
+			case "InsertTextCommand":
+				InsertTextCommand itc = new InsertTextCommand((InsertTextCommand) c);
+				return itc;
+			case "ItalicCommand":
+				ItalicCommand ic = new ItalicCommand((ItalicCommand)c);
+				return ic;
+			case "RemoveTextCommand":
+				RemoveTextCommand rtc = new RemoveTextCommand((RemoveTextCommand) c); 
+				return rtc;
+			case "UnderlineCommand":
+				UnderlineCommand u = (UnderlineCommand) c;
+		}
+	}
+}

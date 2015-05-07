@@ -1,0 +1,110 @@
+package controller.command;
+
+import java.util.Stack;
+
+import javax.swing.text.Caret;
+
+public class Macro
+{
+	private String name;
+	private Stack<TextCommand> commands;
+	private Stack<TextCommand> redoCommands;
+	private TextCommandInvoker invoker;
+		
+	
+	public Macro(TextCommandInvoker tci)
+	{
+		this.name = "";
+		commands = new Stack<TextCommand>();
+		redoCommands = new Stack<TextCommand>();
+		invoker = tci;
+	}
+	public Macro(String name, TextCommandInvoker tci)
+	{
+		this.name = name;
+		commands = new Stack<TextCommand>();
+		invoker = tci;
+	}
+	
+	public void setName(String name)
+	{
+		this.name = name;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public int totalCommands()
+	{
+		return commands.size(); 
+	}
+	
+	public void addStep(TextCommand c)
+	{
+		//Add something to make start relative to cursor
+		if(c != null)
+		{
+			commands.push(c);
+			redoCommands.clear();
+		}
+		else
+		{
+			System.out.println();
+		}
+	}
+	
+	public void undoStep()
+	{
+		if(commands.peek()!=null)
+			redoCommands.push(commands.pop());
+	}
+	
+	public void redoStep()
+	{
+		if(redoCommands.peek()!=null)
+			commands.push(redoCommands.pop());
+	}
+	
+	public void play(Caret car)
+	{
+		for(int i = 0; i < commands.size(); i++)
+		{
+			TextCommand c = commands.get(i);
+			c.updateStart(car.getDot());
+			invoker.doCommand(TextCommandCopier.copy(c));
+//			switch(c.getClass().getSimpleName())
+//			{
+//				case "BoldCommand":
+////					BoldCommand b = (BoldCommand) c;
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//				case "ColorCommand":
+////					ColorCommand cr = (ColorCommand) c;
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//				case "InsertTextCommand":
+////					InsertTextCommand itc = (InsertTextCommand) c;
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//				case "ItalicCommand":
+////					ItalicCommand ic = (ItalicCommand)c;
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//				case "RemoveTextCommand":
+////					RemoveTextCommand rtc = (RemoveTextCommand) c; 
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//				case "UnderlineCommand":
+////					UnderlineCommand u = (UnderlineCommand) c;
+//					invoker.doCommand(TextCommandCopier.copy(c));
+//					break;
+//			}
+//			
+//			
+//			
+//			
+		}
+	}
+}
